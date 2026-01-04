@@ -81,7 +81,8 @@ public class LevelConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return new Thickness(2 + 14 * (int)value, 0, 0, 0);
+        int.TryParse(value.ToString(), out int v);
+        return new Thickness(2 + 14 * v, 0, 0, 0);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
