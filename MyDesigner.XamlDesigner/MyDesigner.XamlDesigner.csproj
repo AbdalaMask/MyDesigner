@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libery\CSharpEditor\CSharpEditor.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.Designer\MyDesigner.Designer.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.Design\MyDesigner.Design.csproj" />
     <ProjectReference Include="..\Libery\MyDesigner.XamlDom\MyDesigner.XamlDom.csproj" />
