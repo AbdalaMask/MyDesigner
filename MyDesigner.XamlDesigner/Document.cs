@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using MyDesigner.Design;
 using MyDesigner.Design.Interfaces;
+using MyDesigner.Design.Services.Integration;
 using MyDesigner.Designer;
 using MyDesigner.Designer.Services;
 using MyDesigner.Designer.Xaml;
@@ -26,6 +27,8 @@ namespace MyDesigner.XamlDesigner
         private string filePath;
         private bool isDirty;
         private XamlElementLineInfo xamlElementLineInfo;
+        private string[] _assemblyPaths;
+        private string _projectAssemblyName;
 
         [ObservableProperty]
         private string name;
@@ -50,6 +53,23 @@ namespace MyDesigner.XamlDesigner
         {
             FilePath = filePath;
             ReloadFile();
+        }
+
+        public Document(string filePath, string[] assemblyPaths, string projectAssemblyName) : this(Path.GetFileNameWithoutExtension(filePath), "")
+        {
+            FileOpeningLogContext.Info($"[Document.ctor] ========== NEW DOCUMENT WITH ASSEMBLIES ==========");
+            FileOpeningLogContext.Info($"[Document.ctor] FilePath: {filePath}");
+            FileOpeningLogContext.Info($"[Document.ctor] Assembly paths ({assemblyPaths?.Length ?? 0}): {string.Join(",", assemblyPaths ?? new string[0])}");
+            FileOpeningLogContext.Info($"[Document.ctor] Project assembly: {projectAssemblyName}");
+            
+            _assemblyPaths = assemblyPaths;
+            _projectAssemblyName = projectAssemblyName;
+            FilePath = filePath;
+            
+            FileOpeningLogContext.Info($"[Document.ctor] Stored: _assemblyPaths has {_assemblyPaths?.Length ?? 0} items");
+            FileOpeningLogContext.Info($"[Document.ctor] Calling ReloadFile()");
+            ReloadFile();
+            FileOpeningLogContext.Info($"[Document.ctor] ========== END DOCUMENT CONSTRUCTOR ==========");
         }
 
         public string Text
@@ -204,15 +224,29 @@ namespace MyDesigner.XamlDesigner
         {
             try
             {
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] ========== START ==========");
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] FilePath: {FilePath}");
+                
                 if (File.Exists(FilePath))
                 {
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] File exists, reading content...");
                     Text = File.ReadAllText(FilePath);
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] File content loaded ({Text.Length} characters)");
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] First 100 chars: {Text.Substring(0, Math.Min(100, Text.Length)).Replace('\n', ' ').Replace('\r', ' ')}");
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] Calling UpdateDesign()...");
                     UpdateDesign();
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] UpdateDesign() completed");
                     IsDirty = false;
                 }
+                else
+                {
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Error($"[Document.ReloadFile] File DOES NOT EXIST!");
+                }
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] ========== END ==========");
             }
             catch (Exception ex)
             {
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Error($"[Document.ReloadFile] EXCEPTION: {ex.Message}");
                 Shell.ReportException(ex);
             }
         }
@@ -299,6 +333,9 @@ namespace MyDesigner.XamlDesigner
         {
             try
             {
+                FileOpeningLogContext.Info($"[Document.UpdateDesign] ========== START ==========");
+                FileOpeningLogContext.Info($"[Document.UpdateDesign] Text is null/empty: {string.IsNullOrEmpty(Text)}");
+                
                 if (!string.IsNullOrEmpty(Text))
                 {
                     OutlineRoot = null;
@@ -314,34 +351,78 @@ namespace MyDesigner.XamlDesigner
                         BasicMetadata.Register();
 
                         var loadSettings = new XamlLoadSettings();
-                       // loadSettings.DesignerAssemblies.Add(this.GetType().Assembly);
+                        
+                        FileOpeningLogContext.Info($"[Document.UpdateDesign] _assemblyPaths is null: {_assemblyPaths == null}");
+                        FileOpeningLogContext.Info($"[Document.UpdateDesign] _assemblyPaths length: {_assemblyPaths?.Length ?? 0}");
+                        
+                        // If assembly paths were provided (from server mode), load them
+                        if (_assemblyPaths != null && _assemblyPaths.Length > 0)
+                        {
+                            FileOpeningLogContext.Info($"[Document.UpdateDesign] Loading {_assemblyPaths.Length} assemblies");
+                            var typeFinder = XamlTypeFinder.CreateAvaloniaTypeFinder();
+                            foreach (var asmPath in _assemblyPaths)
+                            {
+                                try
+                                {
+                                    FileOpeningLogContext.Info($"[Document.UpdateDesign] Loading assembly: {asmPath}");
+                                    var asm = System.Reflection.Assembly.LoadFrom(asmPath);
+                                    typeFinder.RegisterAssembly(asm);
+                                    FileOpeningLogContext.Info($"[Document.UpdateDesign] Successfully loaded: {asm.GetName().Name}");
+                                }
+                                catch (Exception ex)
+                                {
+                                    FileOpeningLogContext.Error($"[Document.UpdateDesign] Failed to load {asmPath}: {ex.Message}");
+                                    Shell.ReportException(ex);
+                                }
+                            }
+                            loadSettings.TypeFinder = typeFinder;
+                            loadSettings.CurrentProjectAssemblyName = _projectAssemblyName;
+                            FileOpeningLogContext.Info($"[Document.UpdateDesign] TypeFinder and project name set");
+                        }
+                        else
+                        {
+                            FileOpeningLogContext.Info($"[Document.UpdateDesign] No assembly paths provided, using default TypeFinder");
+                        }
 
+                        FileOpeningLogContext.Info($"[Document.UpdateDesign] Calling DesignSurface.LoadDesigner()...");
                         DesignSurface.LoadDesigner(xmlReader, loadSettings);
+                        FileOpeningLogContext.Info($"[Document.UpdateDesign] DesignSurface.LoadDesigner() completed");
                     }
                     if (DesignContext.RootItem != null)
                     {
+                        FileOpeningLogContext.Info($"[Document.UpdateDesign] RootItem created, building outline");
                         OutlineRoot = DesignContext.RootItem.CreateOutlineNode();
                         if (UndoService != null)
                         {
                             UndoService.UndoStackChanged += UndoService_UndoStackChanged;
                         }
                     }
+                    else
+                    {
+                        FileOpeningLogContext.Error($"[Document.UpdateDesign] RootItem is NULL after LoadDesigner");
+                    }
                 }
-                
-                OnPropertyChanged(nameof(SelectionService));
-                OnPropertyChanged(nameof(XamlErrorService));
-                OnPropertyChanged(nameof(DesignSurface));
-                OnPropertyChanged(nameof(OutlineRoot));
-                
-                // Notify Shell that this document's properties have changed
-                if (Shell.Instance.CurrentDocument == this)
-                {
-                    Shell.Instance.NotifyPropertyChanged(nameof(Shell.CurrentDocument));
-                }
+                FileOpeningLogContext.Info($"[Document.UpdateDesign] ========== END ==========");
             }
             catch (Exception ex)
             {
+                FileOpeningLogContext.Error($"[Document.UpdateDesign] EXCEPTION: {ex.Message}");
+                FileOpeningLogContext.Error($"[Document.UpdateDesign] Exception details: {ex}");
                 Shell.ReportException(ex);
+            }
+        }
+
+        private void NotifyDesignSurfaceChanged()
+        {
+            OnPropertyChanged(nameof(SelectionService));
+            OnPropertyChanged(nameof(XamlErrorService));
+            OnPropertyChanged(nameof(DesignSurface));
+            OnPropertyChanged(nameof(OutlineRoot));
+            
+            // Notify Shell that this document's properties have changed
+            if (Shell.Instance.CurrentDocument == this)
+            {
+                Shell.Instance.NotifyPropertyChanged(nameof(Shell.CurrentDocument));
             }
         }
 
