@@ -1,0 +1,514 @@
+<UserControl
+    mc:Ignorable="d"
+    x:Class="MyDesigner.XamlDesigner.Views.FromToolboxView"
+    x:DataType="local:Toolbox"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:converters="clr-namespace:MyDesigner.XamlDesigner.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MyDesigner.XamlDesigner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Click="BrowseForAssemblies_OnClick" Header="Browse..." />
+            <MenuItem Click="RemoveAssembly_OnClick" Header="Remove Assembly" />
+            <Separator />
+            <MenuItem Click="Refresh_OnClick" Header="Refresh" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
+    <UserControl.Resources>
+        <!--  Converter لعرض الكنترول المصغر  -->
+        <converters:ControlToThumbnailConverter x:Key="ControlToThumbnailConverter" />
+
+        <!--  Modern Gradient Brushes  -->
+        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" x:Key="ModernBackgroundBrush">
+            <GradientStop Color="#FFFBFCFD" Offset="0" />
+            <GradientStop Color="#FFF1F5F9" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" x:Key="CategoryGradientBrush">
+            <GradientStop Color="#FF667EEA" Offset="0" />
+            <GradientStop Color="#FF764BA2" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" x:Key="CategoryHoverBrush">
+            <GradientStop Color="#FF7C3AED" Offset="0" />
+            <GradientStop Color="#FF8B5CF6" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0" x:Key="SelectionBrush">
+            <GradientStop Color="#FF3B82F6" Offset="0" />
+            <GradientStop Color="#FF1D4ED8" Offset="1" />
+        </LinearGradientBrush>
+
+
+
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <!--  Style for TreeView  -->
+        <Style Selector="TreeView">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="TreeViewItem">
+            <Setter Property="IsExpanded" Value="True" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <StackPanel>
+                        <!--  Header Region  -->
+                        <Grid ColumnDefinitions="*, Auto" x:Name="HeaderGrid">
+
+                            <!--  Selection Background  -->
+                            <Border
+                                Background="Transparent"
+                                CornerRadius="6"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="4,1"
+                                x:Name="SelectionBorder" />
+
+                            <!--  Header Content  -->
+                            <ContentPresenter
+                                Background="Transparent"
+                                Content="{TemplateBinding Header}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                Grid.Column="0"
+                                HorizontalContentAlignment="Stretch"
+                                Padding="8,4"
+                                x:Name="PART_HeaderPresenter" />
+
+                            <!--  Toggle Button (Expander Arrow)  -->
+                            <ToggleButton
+                                Grid.Column="1"
+                                Height="30"
+                                IsChecked="{TemplateBinding IsExpanded,
+                                                            Mode=TwoWay}"
+                                IsVisible="True"
+                                Margin="0,0,5,0"
+                                Width="30"
+                                x:Name="Expander">
+                                <ToggleButton.Template>
+                                    <ControlTemplate>
+                                        <Border Background="Transparent" Padding="5">
+                                            <Path
+                                                Data="M 2 1 L 6 5 L 10 1"
+                                                HorizontalAlignment="Center"
+                                                Stroke="#FF667EEA"
+                                                StrokeThickness="2.5"
+                                                VerticalAlignment="Center"
+                                                x:Name="Arrow">
+                                                <Path.Transitions>
+                                                    <Transitions>
+                                                        <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                                                    </Transitions>
+                                                </Path.Transitions>
+                                            </Path>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                        </Grid>
+
+                        <!--  Items Presenter (Children)  -->
+                        <ItemsPresenter
+                            IsVisible="{TemplateBinding IsExpanded}"
+                            ItemsPanel="{TemplateBinding ItemsPanel}"
+                            x:Name="PART_ItemsPresenter" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!--  تنسيق السهم عند الفتح  -->
+        <Style Selector="TreeViewItem:expanded /template/ ToggleButton#Expander Path#Arrow">
+            <Setter Property="RenderTransform" Value="rotate(0deg)" />
+            <Setter Property="Stroke" Value="#FF8B5CF6" />
+        </Style>
+
+        <!--  تنسيق السهم عند الغلق  -->
+        <Style Selector="TreeViewItem:not(:expanded) /template/ ToggleButton#Expander Path#Arrow">
+            <Setter Property="RenderTransform" Value="rotate(-90deg)" />
+        </Style>
+
+        <!--  حالة الاختيار (IsSelected = True)  -->
+        <Style Selector="TreeViewItem:selected /template/ Border#SelectionBorder">
+            <Setter Property="Background" Value="#FF3B82F6" />
+            <Setter Property="Opacity" Value="0.15" />
+            <!--  الظل في افلونيا يوضع مباشرة هنا  -->
+            <Setter Property="BoxShadow" Value="0 2 8 0 #4D3B82F6" />
+        </Style>
+
+        <!--  حالة الاختيار عندما لا يكون التركيز على النافذة  -->
+        <Style Selector="TreeViewItem:selected:not(:focus) /template/ Border#SelectionBorder">
+            <Setter Property="Background" Value="#FF9CA3AF" />
+            <Setter Property="Opacity" Value="0.12" />
+            <Setter Property="BoxShadow" Value="0 1 4 0 #339CA3AF" />
+        </Style>
+
+        <!--  الستايل الافتراضي للحاوية مع الظل  -->
+        <Style Selector="Border.CategoryContainer">
+            <Setter Property="BoxShadow" Value="0 4 12 0 #404C1D95" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                    <BrushTransition Duration="0:0:0.2" Property="Background" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <!--  تأثير Hover (IsMouseOver)  -->
+        <Style Selector="Border.CategoryContainer:pointerover">
+            <Setter Property="Background" Value="{StaticResource CategoryHoverBrush}" />
+            <Setter Property="RenderTransform" Value="scale(1.02)" />
+            <Setter Property="BoxShadow" Value="0 6 16 0 #594C1D95" />
+        </Style>
+
+        <!--  تأثير الاختيار (IsSelected = True)  -->
+        <!--  نصل إلى الـ Border الموجود داخل الـ TreeViewItem المختار  -->
+        <Style Selector="TreeViewItem:selected Border.CategoryContainer">
+            <Setter Property="Background" Value="{StaticResource SelectionBrush}" />
+            <Setter Property="BorderBrush" Value="#FF1E40AF" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BoxShadow" Value="0 8 20 0 #661E40AF" />
+        </Style>
+
+        <Style Selector="TreeViewItem:selected Border.CategoryContainer TextBlock">
+            <Setter Property="FontWeight" Value="ExtraBold" />
+        </Style>
+
+        <!--  الاختيار عندما يفقد الـ TreeView التركيز (Inactive Selection)  -->
+        <Style Selector="TreeViewItem:selected:not(:focus-within) Border.CategoryContainer">
+            <Setter Property="Background">
+                <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
+                    <GradientStop Color="#FF9CA3AF" Offset="0" />
+                    <GradientStop Color="#FF6B7280" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF4B5563" />
+        </Style>
+
+
+        <!--  الستايل الافتراضي والتحركات  -->
+        <Style Selector="Border.ControlItemBorder">
+            <Setter Property="BoxShadow" Value="0 2 4 0 #1464748B" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Duration="0:0:0.15" Property="RenderTransform" />
+                    <BrushTransition Duration="0:0:0.15" Property="Background" />
+                    <ThicknessTransition Duration="0:0:0.1" Property="BorderThickness" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <!--  1. تأثير تمرير الماوس (PointerOver)  -->
+        <Style Selector="Border.ControlItemBorder:pointerover">
+            <Setter Property="Background">
+                <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
+                    <GradientStop Color="#FFF8FAFC" Offset="0" />
+                    <GradientStop Color="#FFEFF6FF" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF3B82F6" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="RenderTransform" Value="translateY(-1px)" />
+            <Setter Property="BoxShadow" Value="0 2 8 0 #2664748B" />
+        </Style>
+
+        <Style Selector="Border.ControlItemBorder:pointerover Border#ThumbnailBorder">
+            <Setter Property="BorderBrush" Value="#FF3B82F6" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+
+        <Style Selector="Border.ControlItemBorder:pointerover Border.StatusDot">
+            <Setter Property="Background" Value="#FF3B82F6" />
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+
+        <!--  2. تأثير الاختيار (IsSelected = True)  -->
+        <Style Selector="TreeViewItem:selected Border.ControlItemBorder">
+            <Setter Property="Background">
+                <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
+                    <GradientStop Color="#FFDBEAFE" Offset="0" />
+                    <GradientStop Color="#FFC7D2FE" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF3B82F6" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BoxShadow" Value="0 3 12 0 #403B82F6" />
+        </Style>
+
+        <Style Selector="TreeViewItem:selected Border#ThumbnailBorder">
+            <Setter Property="BorderBrush" Value="#FF1D4ED8" />
+            <Setter Property="BorderThickness" Value="2.5" />
+            <Setter Property="Background" Value="#FFF0F9FF" />
+        </Style>
+
+        <Style Selector="TreeViewItem:selected TextBlock.NameLabel">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#FF1E40AF" />
+        </Style>
+
+        <Style Selector="TreeViewItem:selected TextBlock.NamespaceLabel">
+            <Setter Property="Foreground" Value="#FF3730A3" />
+        </Style>
+
+        <!--  3. حالة الاختيار غير النشط (Inactive Selection)  -->
+        <Style Selector="TreeViewItem:selected:not(:focus-within) Border.ControlItemBorder">
+            <Setter Property="Background">
+                <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%">
+                    <GradientStop Color="#FFF1F5F9" Offset="0" />
+                    <GradientStop Color="#FFE2E8F0" Offset="1" />
+                </LinearGradientBrush>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#FF94A3B8" />
+        </Style>
+
+    </UserControl.Styles>
+    <Border
+        Background="{StaticResource ModernBackgroundBrush}"
+        BoxShadow="0 8 20 0 #1A1F2937"
+        CornerRadius="12"
+        Margin="4">
+        <!--  Opacity 0.1 ≈ 1A in Hex  -->
+        <Grid RowDefinitions="Auto, Auto, *">
+
+            <!--  Header  -->
+            <Border
+                Background="{StaticResource CategoryGradientBrush}"
+                CornerRadius="12,12,0,0"
+                Grid.Row="0"
+                Padding="16,12">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Path
+                        Data="M3 7V5C3 3.89 3.89 3 5 3H19C20.11 3 21 3.89 21 5V7H3M4 8H20V19C20 20.11 19.11 21 18 21H6C4.89 21 4 20.11 4 19V8Z"
+                        Fill="White"
+                        Grid.Column="0"
+                        Height="20"
+                        Margin="0,0,12,0"
+                        Stretch="Uniform"
+                        VerticalAlignment="Center"
+                        Width="20" />
+
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Grid.Column="1"
+                        Text="Toolbox"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Search Box  -->
+            <Border
+                Background="White"
+                BorderBrush="#FFE2E8F0"
+                BorderThickness="0,1,0,1"
+                Grid.Row="1"
+                Padding="12">
+                <Grid ColumnDefinitions="*, Auto">
+
+                    <!--  Search Input  -->
+                    <TextBox
+                        Background="#FFFAFBFC"
+                        BorderBrush="#FFCBD5E1"
+                        BorderThickness="1.5"
+                        CornerRadius="8"
+                        FontSize="13"
+                        Grid.Column="0"
+                        Padding="12,10"
+                        TextChanged="SearchTextBox_OnTextChanged"
+                        VerticalContentAlignment="Center"
+                        Watermark="Search Toolbox"
+                        x:Name="SearchTextBox" />
+
+                    <!--  Clear Button Container  -->
+                    <Border
+                        Background="#FFF1F5F9"
+                        BorderBrush="#FFCBD5E1"
+                        BorderThickness="1.5"
+                        CornerRadius="6"
+                        Grid.Column="1"
+                        Height="32"
+                        Margin="8,0,0,0"
+                        Width="32"
+                        x:Name="ClearButtonContainer">
+                        <Button
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="ClearSearchButton_OnClick"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            IsVisible="False"
+                            Padding="0"
+                            VerticalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
+                            x:Name="ClearSearchButton">
+                            <Path
+                                Data="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                                Fill="#FF64748B"
+                                Height="14"
+                                Stretch="Uniform"
+                                Width="14" />
+
+                            <Button.Styles>
+                                <!--  Hover Effect for Clear Button Container  -->
+                                <Style Selector="Button:pointerover">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!--  TreeView  -->
+            <ScrollViewer
+                Grid.Row="2"
+                HorizontalScrollBarVisibility="Disabled"
+                Padding="8,8,8,12"
+                VerticalScrollBarVisibility="Auto">
+                <TreeView
+                    Background="Transparent"
+                    BorderThickness="0"
+                    DoubleTapped="TreeView_DoubleTapped"
+                    ItemsSource="{Binding AssemblyNodes}"
+                    KeyDown="TreeView_KeyDown"
+                    x:Name="uxTreeView">
+
+
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="{x:Type local:AssemblyNode}" ItemsSource="{Binding Controls}">
+                            <Border
+                                Background="{StaticResource CategoryGradientBrush}"
+                                Classes="CategoryContainer"
+                                CornerRadius="8"
+                                HorizontalAlignment="Stretch"
+                                Margin="6,4,6,2"
+                                Padding="16,12,45,12"
+                                x:Name="CategoryBorder">
+
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <!--  Category Icon  -->
+                                    <Border
+                                        Background="White"
+                                        BoxShadow="0 1 4 0 #4D4C1D95"
+                                        CornerRadius="12"
+                                        Grid.Column="0"
+                                        Height="24"
+                                        Margin="0,0,12,0"
+                                        VerticalAlignment="Center"
+                                        Width="24">
+                                        <Path
+                                            Data="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z"
+                                            Fill="#FF667EEA"
+                                            HorizontalAlignment="Center"
+                                            Margin="4"
+                                            Stretch="Uniform"
+                                            VerticalAlignment="Center" />
+                                    </Border>
+
+                                    <!--  Category Text  -->
+                                    <TextBlock
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Foreground="White"
+                                        Grid.Column="1"
+                                        Text="{Binding Name}"
+                                        TextTrimming="CharacterEllipsis"
+                                        VerticalAlignment="Center"
+                                        x:Name="CategoryText" />
+                                </Grid>
+                            </Border>
+                        </TreeDataTemplate>
+
+                        <DataTemplate DataType="{x:Type local:ControlNode}">
+                            <Border
+                                Background="White"
+                                BorderBrush="#FFE2E8F0"
+                                BorderThickness="1"
+                                Classes="ControlItemBorder"
+                                CornerRadius="8"
+                                Margin="8,2,8,2"
+                                Padding="12,10"
+                                x:Name="ControlBorder">
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+
+                                    <!--  Control Thumbnail  -->
+                                    <Border
+                                        Background="#FFFAFBFC"
+                                        BorderBrush="#FFCBD5E1"
+                                        BorderThickness="1.5"
+                                        BoxShadow="0 2 6 0 #1F475569"
+                                        CornerRadius="8"
+                                        Grid.Column="0"
+                                        Height="48"
+                                        Margin="0,0,14,0"
+                                        Padding="4"
+                                        VerticalAlignment="Center"
+                                        Width="48"
+                                        x:Name="ThumbnailBorder">
+                                        <ContentPresenter
+                                            Content="{Binding Type, Converter={StaticResource ControlToThumbnailConverter}}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+                                    </Border>
+
+                                    <!--  Control Info  -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Classes="NameLabel"
+                                            FontSize="13.5"
+                                            FontWeight="SemiBold"
+                                            Foreground="#FF1E293B"
+                                            Text="{Binding Type.Name}"
+                                            TextTrimming="CharacterEllipsis"
+                                            x:Name="ControlNameText" />
+                                        <TextBlock
+                                            Classes="NamespaceLabel"
+                                            FontSize="11"
+                                            Foreground="#FF64748B"
+                                            Margin="0,2,0,0"
+                                            Text="{Binding Type.Namespace}"
+                                            TextTrimming="CharacterEllipsis"
+                                            x:Name="ControlNamespaceText" />
+                                    </StackPanel>
+
+                                    <!--  Status Indicator  -->
+                                    <Border
+                                        Background="#FF10B981"
+                                        Classes="StatusDot"
+                                        CornerRadius="4"
+                                        Grid.Column="2"
+                                        Height="8"
+                                        Margin="8,0,0,0"
+                                        Opacity="0.6"
+                                        VerticalAlignment="Center"
+                                        Width="8"
+                                        x:Name="StatusIndicator" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </ScrollViewer>
+        </Grid>
+
+        <Border.Styles>
+            <!--  Logic for Clear Button Hover  -->
+            <Style Selector="Border#ClearButtonContainer:pointerover">
+                <Setter Property="Background" Value="#FFEF4444" />
+                <Setter Property="BorderBrush" Value="#FFDC2626" />
+            </Style>
+            <Style Selector="Border#ClearButtonContainer:pointerover Path">
+                <Setter Property="Fill" Value="White" />
+            </Style>
+        </Border.Styles>
+    </Border>
+
+</UserControl>

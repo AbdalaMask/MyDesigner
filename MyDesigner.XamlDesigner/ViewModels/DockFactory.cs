@@ -32,13 +32,14 @@ namespace MyDesigner.XamlDesigner.ViewModels
         public override IRootDock CreateLayout()
         {
             // Create tool ViewModels
+            var ProjectExplorerTool = new Tools.ProjectExplorerDock { Id = "projectExplorer", Title = "ProjectExplorer" };
             var toolboxTool = new Tools.ToolboxDock { Id = "Toolbox", Title = "Toolbox" };
             var outlineTool = new Tools.OutlineDock { Id = "Outline", Title = "Outline" };
             var errorsTool = new Tools.ErrorsToolDock { Id = "Errors", Title = "Errors" };
             var propertiesTool = new Tools.PropertyGridDock { Id = "Properties", Title = "Properties" };
             var thumbnailTool = new Tools.ThumbnailDock { Id = "Thumbnail", Title = "Thumbnail" };
-
-            // Left dock - Toolbox and Outline
+            var symbolTool = new Tools.SymbolsDock { Id = "Symbols", Title = "Symbols" };
+            // Left dock (Toolbox/Outline/ProjectExplorer group)
             var leftDock = new ProportionalDock
             {
                 Proportion = 0.2,
@@ -49,21 +50,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     {
                         Proportion = 0.6,
                         ActiveDockable = toolboxTool,
-                        VisibleDockables = CreateList<IDockable>(toolboxTool),
-                        Alignment = Alignment.Left
-                    },
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Proportion = 0.4,
-                        ActiveDockable = outlineTool,
-                        VisibleDockables = CreateList<IDockable>(outlineTool),
+                        VisibleDockables = CreateList<IDockable>(ProjectExplorerTool, toolboxTool, outlineTool),
                         Alignment = Alignment.Left
                     }
                 )
             };
 
-            // Right dock - Properties, Errors, Thumbnail
+            // Right dock (Properties/Thumbnail group)
             var rightDock = new ProportionalDock
             {
                 Proportion = 0.25,
@@ -72,41 +65,47 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 (
                     new ToolDock
                     {
-                        Proportion = 0.4,
-                        ActiveDockable = errorsTool,
-                        VisibleDockables = CreateList<IDockable>(errorsTool),
-                        Alignment = Alignment.Right
-                    },
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Proportion = 0.4,
+                        Proportion = 0.7,
                         ActiveDockable = propertiesTool,
-                        VisibleDockables = CreateList<IDockable>(propertiesTool),
-                        Alignment = Alignment.Right
-                    },
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Proportion = 0.2,
-                        ActiveDockable = thumbnailTool,
-                        VisibleDockables = CreateList<IDockable>(thumbnailTool),
+                        VisibleDockables = CreateList<IDockable>(propertiesTool, symbolTool, thumbnailTool),
                         Alignment = Alignment.Right
                     }
                 )
             };
 
-            // Document dock - Center area
+            // Document dock (Top part of center area)
             var documentDock = new Dock.Model.Mvvm.Controls.DocumentDock
             {
                 Id = "Documents",
                 Title = "Documents",
                 IsCollapsable = false,
                 VisibleDockables = CreateList<IDockable>(),
-                CanCreateDocument = true
+                CanCreateDocument = true,
+                Proportion = 0.8 // Documents take 80% height of the center column
             };
 
-            // Main layout - Horizontal arrangement
+            // Errors panel hosted in a ToolDock (Bottom part of center area)
+            var errorsDockPanel = new ToolDock
+            {
+                ActiveDockable = errorsTool,
+                VisibleDockables = CreateList<IDockable>(errorsTool),
+                Alignment = Alignment.Bottom,
+                Proportion = 0.2 // Errors take 20% height of the center column
+            };
+
+            // **Center Column Layout:** A vertical stack of DocumentDock on top and Errors below it
+            var centerColumnLayout = new ProportionalDock
+            {
+                Orientation = Orientation.Vertical,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    documentDock,
+                    new ProportionalDockSplitter(), // Splitter only within the center column
+                    errorsDockPanel
+                )
+            };
+
+            // Main layout: Horizontal arrangement (Left panel | Center Column | Right panel)
             var mainLayout = new ProportionalDock
             {
                 Orientation = Orientation.Horizontal,
@@ -114,13 +113,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 (
                     leftDock,
                     new ProportionalDockSplitter(),
-                    documentDock,
+                    centerColumnLayout, // Use the new vertical center layout here
                     new ProportionalDockSplitter(),
                     rightDock
                 )
             };
 
-            // Home view
+            // Home view wraps the main layout
             var homeView = new ProportionalDock
             {
                 Id = "Home",
@@ -129,7 +128,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 VisibleDockables = CreateList<IDockable>(mainLayout)
             };
 
-            // Root dock
+            // Set up the final root dock
             var rootDock = CreateRootDock();
             rootDock.IsCollapsable = false;
             rootDock.ActiveDockable = homeView;
@@ -141,6 +140,8 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             return rootDock;
         }
+
+
 
         public override void InitLayout(IDockable layout)
         {

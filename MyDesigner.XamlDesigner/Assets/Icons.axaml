@@ -1,0 +1,116 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Vector Icons for the application -->
+    
+    <!-- File Icons -->
+    <DrawingImage x:Key="XamlFileIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FF007ACC" Geometry="M12,2A2,2 0 0,1 14,4V20A2,2 0 0,1 12,22H4A2,2 0 0,1 2,20V8L8,2H12M13,3H8.5L3,8.5V20A1,1 0 0,0 4,21H12A1,1 0 0,0 13,20V4A1,1 0 0,0 12,3Z" />
+                <GeometryDrawing Brush="#FFFFFF" Geometry="M7,14H9V16H7V14M10,14H12V16H10V14M7,17H9V19H7V17M10,17H12V19H10V17Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="CSharpFileIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FF239B56" Geometry="M12,2A2,2 0 0,1 14,4V20A2,2 0 0,1 12,22H4A2,2 0 0,1 2,20V8L8,2H12M13,3H8.5L3,8.5V20A1,1 0 0,0 4,21H12A1,1 0 0,0 13,20V4A1,1 0 0,0 12,3Z" />
+                <GeometryDrawing Brush="#FFFFFF" Geometry="M7,14H9V16H7V14M10,14H12V16H10V14M7,17H9V19H7V17M10,17H12V19H10V17Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="JsonFileIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FFF39C12" Geometry="M12,2A2,2 0 0,1 14,4V20A2,2 0 0,1 12,22H4A2,2 0 0,1 2,20V8L8,2H12M13,3H8.5L3,8.5V20A1,1 0 0,0 4,21H12A1,1 0 0,0 13,20V4A1,1 0 0,0 12,3Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Folder Icons -->
+    <DrawingImage x:Key="FolderIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFFFC107" Geometry="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="FolderOpenIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFFFC107" Geometry="M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H20A2,2 0 0,1 22,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Project Icons -->
+    <DrawingImage x:Key="ProjectIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF9C27B0" Geometry="M12,2L2,7V10C2,16 6,20.5 12,22C18,20.5 22,16 22,10V7L12,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="SolutionIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF673AB7" Geometry="M12,2L2,7V10C2,16 6,20.5 12,22C18,20.5 22,16 22,10V7L12,2M12,4.14L20,8.23V10C20,15.05 16.81,19.14 12,20.86C7.19,19.14 4,15.05 4,10V8.23L12,4.14Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Tool Icons -->
+    <DrawingImage x:Key="BuildIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF4CAF50" Geometry="M22.7,19L13.6,9.9C14.5,7.6 14,4.9 12.1,3C10.1,1 7.1,0.6 4.7,1.7L9,6L6,9L1.6,4.7C0.4,7.1 0.9,10.1 2.9,12.1C4.8,14 7.5,14.5 9.8,13.6L18.9,22.7C19.3,23.1 19.9,23.1 20.3,22.7L22.6,20.4C23.1,20 23.1,19.3 22.7,19Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="RunIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF2196F3" Geometry="M8,5.14V19.14L19,12.14L8,5.14Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="StopIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFF44336" Geometry="M18,18H6V6H18V18Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Control Icons -->
+    <DrawingImage x:Key="ButtonIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF607D8B" Geometry="M5,3A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5M5,5H19V19H5V5Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="TextBoxIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF795548" Geometry="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H5M5,5H19V19H5V5M7,7V9H17V7H7M7,11V13H17V11H7M7,15V17H14V15H7Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="GridIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF9E9E9E" Geometry="M10,4V8H14V4H10M16,4V8H20V4H16M16,10V14H20V10H16M16,16V20H20V16H16M14,20V16H10V20H14M8,20V16H4V20H8M8,14V10H4V14H8M8,8V4H4V8H8M10,14H14V10H10V14M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4C2.89,22 2,21.1 2,20V4A2,2 0 0,1 4,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Status Icons -->
+    <DrawingImage x:Key="ErrorIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFF44336" Geometry="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="WarningIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FFFF9800" Geometry="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="InfoIcon">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#FF2196F3" Geometry="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

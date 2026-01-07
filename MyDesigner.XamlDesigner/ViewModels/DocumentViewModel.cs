@@ -22,6 +22,9 @@ namespace MyDesigner.XamlDesigner.ViewModels
         private bool inDesignMode;
 
         [ObservableProperty]
+        private bool inCodeMode;
+
+        [ObservableProperty]
         private bool inXamlMode;
 
         [ObservableProperty]
@@ -40,6 +43,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             XamlText = document.Text;
             InDesignMode = document.InDesignMode;
             InXamlMode = document.InXamlMode;
+            inCodeMode= document.InCodeMode;
             Title = document.Title;
             IsDirty = document.IsDirty;
             designSurface=document.DesignSurface;

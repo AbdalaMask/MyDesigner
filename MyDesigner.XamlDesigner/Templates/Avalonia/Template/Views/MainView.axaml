@@ -1,0 +1,17 @@
+<UserControl
+    Height="450"
+    Width="800"
+    mc:Ignorable="d"
+    x:Class="__PROJECT_NAME__.Views.__CLASS_NAME__"
+    x:DataType="vm:MainViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:__PROJECT_NAME__.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.DataContext>
+        <vm:MainViewModel />
+    </UserControl.DataContext>
+
+    <Canvas />
+</UserControl>

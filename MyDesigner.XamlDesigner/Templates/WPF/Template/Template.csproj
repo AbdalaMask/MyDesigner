@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MyCompany.HMIControl.Base.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.HMIControl.Core.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.HMIControl.HMI.Ex1.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.HMIControl.HMI.Ex2.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.HMIControl.HMI.Model.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.HMIControl.HMI.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.MyStudio.Common.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.MyStudio.DriverComm.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.MyStudio.ImagePicker.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.MyStudio.Images.WPF" Version="1.0.0"/>
+        <PackageReference Include="MyCompany.MyStudio.ImageTools.WPF" Version="1.0.0"/>
+    </ItemGroup>
+
+</Project>

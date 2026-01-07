@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MyDesigner.XamlDesigner.Avalonia.Templates.NewFileTemplate">
+    
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Background="#FF007ACC" 
+                Padding="20">
+            <StackPanel>
+                <TextBlock Text="مرحباً بك في MyDesigner" 
+                          FontSize="24" 
+                          FontWeight="Bold" 
+                          Foreground="White" 
+                          HorizontalAlignment="Center" />
+                <TextBlock Text="مصمم XAML للـ Avalonia UI" 
+                          FontSize="14" 
+                          Foreground="White" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,5,0,0" />
+            </StackPanel>
+        </Border>
+        
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" 
+                     Padding="20">
+            <StackPanel Spacing="20">
+                
+                <!-- Welcome Message -->
+                <Border Background="#FFF8F9FA" 
+                       BorderBrush="#FFCCCCCC" 
+                       BorderThickness="1" 
+                       CornerRadius="5" 
+                       Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="🎉 مرحباً بك!" 
+                                  FontSize="18" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,10" />
+                        <TextBlock Text="لقد تم إنشاء مستند جديد بنجاح. يمكنك الآن البدء في تصميم واجهة المستخدم الخاصة بك باستخدام Avalonia UI."
+                                  TextWrapping="Wrap" 
+                                  LineHeight="1.5" />
+                    </StackPanel>
+                </Border>
+                
+                <!-- Quick Start -->
+                <Border Background="#FFF0F8FF" 
+                       BorderBrush="#FF007ACC" 
+                       BorderThickness="1" 
+                       CornerRadius="5" 
+                       Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="🚀 البدء السريع" 
+                                  FontSize="16" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,10" />
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="• استخدم صندوق الأدوات (Toolbox) لإضافة عناصر التحكم" />
+                            <TextBlock Text="• اسحب وأفلت العناصر على سطح التصميم" />
+                            <TextBlock Text="• استخدم نافذة الخصائص (Properties) لتخصيص العناصر" />
+                            <TextBlock Text="• قم بالتبديل بين وضع التصميم ووضع XAML" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Features -->
+                <Border Background="#FFF5F5F5" 
+                       BorderBrush="#FFCCCCCC" 
+                       BorderThickness="1" 
+                       CornerRadius="5" 
+                       Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="✨ الميزات المتاحة" 
+                                  FontSize="16" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,10" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Spacing="5">
+                                <TextBlock Text="• تحرير XAML مع تمييز الصيغة" />
+                                <TextBlock Text="• معاينة مباشرة للتصميم" />
+                                <TextBlock Text="• صندوق أدوات شامل" />
+                                <TextBlock Text="• نظام خصائص متقدم" />
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Spacing="5">
+                                <TextBlock Text="• دعم السحب والإفلات" />
+                                <TextBlock Text="• إدارة المشاريع" />
+                                <TextBlock Text="• نظام الأخطاء والتحذيرات" />
+                                <TextBlock Text="• دعم السمات المتعددة" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Sample Code -->
+                <Border Background="#FFF8F8F8" 
+                       BorderBrush="#FFCCCCCC" 
+                       BorderThickness="1" 
+                       CornerRadius="5" 
+                       Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="📝 مثال على كود XAML" 
+                                  FontSize="16" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,10" />
+                        <Border Background="White" 
+                               BorderBrush="#FFCCCCCC" 
+                               BorderThickness="1" 
+                               CornerRadius="3" 
+                               Padding="10">
+                            <TextBlock FontFamily="Consolas" 
+                                      FontSize="12" 
+                                      Text="&lt;StackPanel Margin=&quot;20&quot;&gt;&#x0A;    &lt;TextBlock Text=&quot;مرحباً بالعالم!&quot; &#x0A;               FontSize=&quot;18&quot; &#x0A;               HorizontalAlignment=&quot;Center&quot; /&gt;&#x0A;    &lt;Button Content=&quot;انقر هنا&quot; &#x0A;            HorizontalAlignment=&quot;Center&quot; &#x0A;            Margin=&quot;0,10,0,0&quot; /&gt;&#x0A;&lt;/StackPanel&gt;" />
+                        </Border>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Tips -->
+                <Border Background="#FFFEF7E0" 
+                       BorderBrush="#FFFFC107" 
+                       BorderThickness="1" 
+                       CornerRadius="5" 
+                       Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="💡 نصائح مفيدة" 
+                                  FontSize="16" 
+                                  FontWeight="Bold" 
+                                  Margin="0,0,0,10" />
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="• استخدم Ctrl+S لحفظ المستند" />
+                            <TextBlock Text="• استخدم F5 لتشغيل المعاينة" />
+                            <TextBlock Text="• استخدم Ctrl+Z للتراجع" />
+                            <TextBlock Text="• استخدم Ctrl+Y للإعادة" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

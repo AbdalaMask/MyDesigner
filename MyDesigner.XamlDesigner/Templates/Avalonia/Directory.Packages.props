@@ -1,0 +1,33 @@
+<Project>
+    <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- Avalonia packages -->
+        <!-- Important: keep version in sync! -->
+        <PackageVersion Include="Avalonia" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Desktop" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.iOS" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Browser" Version="11.3.10"/>
+        <PackageVersion Include="Avalonia.Android" Version="11.3.10"/>
+
+        <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+
+        <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15"/>
+
+
+        <!--<PackageVersion Include="MyCompany.HMIControl.Base.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.HMIControl.Core.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.HMIControl.HMI.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.HMIControl.HMI.Ex1.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.HMIControl.HMI.Ex2.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.HMIControl.HMI.Model.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.MyStudio.Common.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.MyStudio.DriverComm.Avalonia" Version="1.0.0" />
+        <PackageVersion Include="MyCompany.MyStudio.Images.Avalonia" Version="1.0.0" />-->
+    </ItemGroup>
+</Project>

@@ -1,0 +1,202 @@
+<UserControl
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="MyDesigner.XamlDesigner.ProjectExplorerView"
+    x:DataType="vm:ProjectExplorerViewViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:MyDesigner.XamlDesigner.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.DataContext>
+		<vm:ProjectExplorerViewViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <helpers:StringToImageConverter x:Key="StringToImageConverter" />
+        <vm:BoolToFontWeightConverter x:Key="BoolToFontWeightConverter" />
+        </UserControl.Resources>
+    <Grid>
+		   <TreeView
+        Margin="5" ItemsSource="{Binding SolutionItems}"
+        SelectionChanged="FilesTreeView_SelectionChanged"
+        x:Name="FilesTreeView">
+<!-- تعريف القالب لكل عنصر -->
+  <TreeView.ItemTemplate>
+    <TreeDataTemplate ItemsSource="{Binding Children}">
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <Image Source="{Binding Icon, Converter={StaticResource StringToImageConverter}}" 
+               Width="16" Height="16"/>
+        <TextBlock Text="{Binding Name}" 
+                   FontWeight="{Binding IsFontBold, Converter={StaticResource BoolToFontWeightConverter}}"/>
+      </StackPanel>
+    </TreeDataTemplate>
+  </TreeView.ItemTemplate>
+  
+  <!-- ربط حالة التوسيع -->
+  <TreeView.Styles>
+    <Style Selector="TreeViewItem">
+      <Setter Property="IsExpanded" Value="False"/>
+    </Style>
+  </TreeView.Styles>
+
+
+        <TreeView.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Add">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/New.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+
+                    <MenuItem Command="{Binding NewFileCommand}" Header="New File">
+                        <MenuItem.Icon>
+                            <Image
+                                Height="16"
+                                Source="avares://MyDesigner.XamlDesigner/Assets/xaml_icon.png"
+                                Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Click="AddNewFolder_Click" Header="New Folder">
+                        <MenuItem.Icon>
+                            <Image
+                                Height="16"
+                                Source="avares://MyDesigner.XamlDesigner/Assets/Open.png"
+                                Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator />
+
+                    <MenuItem Click="AddExistingFile_Click" Header="Existing File">
+                        <MenuItem.Icon>
+                            <Image
+                                Height="16"
+                                Source="avares://MyDesigner.XamlDesigner/Assets/Open_32x32.png"
+                                Width="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+
+                <MenuItem Click="Edit_Click" Header="Edit">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Edit_16x16.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Click="Delete_Click" Header="Delete">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Delete.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator />
+
+                <MenuItem Click="SetAsStartupProject_Click" Header="Set as Startup Project">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Play_32x32.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator />
+
+                <MenuItem Command="{Binding BuildCommand}" Header="Build Project">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Save_32x32.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Command="{Binding RebuildCommand}" Header="Rebuild Project">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Convert_32x32.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator />
+
+                <MenuItem Click="RunProject_Click" Header="Run Project">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Play_32x32.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Click="StopProject_Click" Header="Stop Project">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Stop.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator />
+
+                <MenuItem Click="OpenProjectLocation_Click" Header="Open Project Location">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Open.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator />
+
+                <MenuItem Click="Refresh_Click" Header="Refresh">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/Convert_16x16.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Click="CloseTree_Click" Header="Close Tree">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/TreeView_16x16.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Click="ExpandTree_Click" Header="Expand Tree">
+                    <MenuItem.Icon>
+                        <Image
+                            Height="16"
+                            Source="avares://MyDesigner.XamlDesigner/Assets/TreeView_16x16.png"
+                            Width="16" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+        </TreeView.ContextMenu>
+    </TreeView>
+
+    </Grid>
+
+
+
+ 
+</UserControl>

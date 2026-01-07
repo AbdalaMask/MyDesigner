@@ -1,17 +1,916 @@
-<UserControl x:Class="MyDesigner.XamlDesigner.Views.MainView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
-             xmlns:dock="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-             mc:Ignorable="d"
-             d:DesignWidth="1200" d:DesignHeight="800"
-             x:DataType="vm:MainWindowViewModel">
-  <Design.DataContext>
-    <vm:MainWindowViewModel />
-  </Design.DataContext>
-  
-  <dock:DockControl Layout="{Binding Layout}" />
-  
+﻿<UserControl
+    d:DesignHeight="800"
+    d:DesignWidth="1200"
+    mc:Ignorable="d"
+    x:Class="MyDesigner.XamlDesigner.Views.MainView"
+    x:DataType="vm:MainWindowViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:designer="clr-namespace:MyDesigner.Designer;assembly=MyDesigner.Designer"
+    xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dock="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <UserControl.KeyBindings>
+        <KeyBinding Command="{Binding NewCommand}" Gesture="Ctrl+N" />
+        <KeyBinding Command="{Binding OpenCommand}" Gesture="Ctrl+O" />
+        <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />
+        <KeyBinding Command="{Binding SaveAsCommand}" Gesture="Ctrl+Shift+S" />
+        <KeyBinding Command="{Binding CloseCommand}" Gesture="Ctrl+W" />
+        <KeyBinding Command="{Binding ExitCommand}" Gesture="Alt+F4" />
+        <KeyBinding Command="{Binding RunCommand}" Gesture="F5" />
+    </UserControl.KeyBindings>
+    <UserControl.Resources>
+
+        <BoxShadows x:Key="ModernShadow">0 8 20 0 #261F2937</BoxShadows>
+        <!--  Modern Gradient Brushes  -->
+        <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%" x:Key="ModernBackgroundBrush">
+            <GradientStop Color="#FFFBFCFD" Offset="0" />
+            <GradientStop Color="#FFF1F5F9" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%" x:Key="HeaderGradientBrush">
+            <GradientStop Color="#FF1E293B" Offset="0" />
+            <GradientStop Color="#FF334155" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush EndPoint="0%,100%" StartPoint="0%,0%" x:Key="ToolbarGradientBrush">
+            <GradientStop Color="#FFFFFFFF" Offset="0" />
+            <GradientStop Color="#FFF8FAFC" Offset="1" />
+        </LinearGradientBrush>
+
+
+    </UserControl.Resources>
+    <UserControl.Styles>
+
+
+
+        <!--  Modern Button Style  -->
+        <Style Selector="Button.ModernToolbarButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="Margin" Value="2,0" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="#FF334155" />
+            <Setter Property="Cursor" Value="Hand" />
+            <!--  لإضافة زوايا مستديرة بشكل افتراضي  -->
+            <Setter Property="CornerRadius" Value="6" />
+
+            <Setter Property="Template">
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        x:Name="PART_Border">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            x:Name="PART_ContentPresenter" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!--  Trigger: PointerOver (MouseOver في WPF)  -->
+        <Style Selector="Button.ModernToolbarButton:pointerover /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FFF1F5F9" />
+            <Setter Property="BorderBrush" Value="#FFE2E8F0" />
+        </Style>
+
+        <!--  Trigger: Pressed  -->
+        <Style Selector="Button.ModernToolbarButton:pressed /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FFE2E8F0" />
+            <Setter Property="BorderBrush" Value="#FFCBD5E1" />
+        </Style>
+        <!--  Modern Icon Button Style  -->
+        <Style Selector="Button.ModernIconButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="CornerRadius" Value="8" />
+
+            <Setter Property="Template">
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        x:Name="PART_Border">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            x:Name="PART_ContentPresenter" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!--  حالة تمرير الماوس (PointerOver)  -->
+        <Style Selector="Button.ModernIconButton:pointerover /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FF3B82F6" />
+        </Style>
+
+        <!--  حالة الضغط (Pressed)  -->
+        <Style Selector="Button.ModernIconButton:pressed /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FF1D4ED8" />
+        </Style>
+
+        <!--  Office-Style Toolbar Button  -->
+        <Style Selector="Button.OfficeToolbarButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="Margin" Value="2,2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="MinWidth" Value="60" />
+            <Setter Property="CornerRadius" Value="3" />
+
+            <Setter Property="Template">
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        x:Name="PART_Border">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            x:Name="PART_ContentPresenter" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!--  حالة تمرير الماوس (PointerOver)  -->
+        <Style Selector="Button.OfficeToolbarButton:pointerover /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FFFFE4B5" />
+            <Setter Property="BorderBrush" Value="#FFFFD700" />
+        </Style>
+
+        <!--  حالة الضغط (Pressed)  -->
+        <Style Selector="Button.OfficeToolbarButton:pressed /template/ Border#PART_Border">
+            <Setter Property="Background" Value="#FFFFD700" />
+            <Setter Property="BorderBrush" Value="#FFFFA500" />
+        </Style>
+
+    </UserControl.Styles>
+    <!--  إضافة DialogHost كحاوي رئيسي  -->
+    <dialogHost:DialogHost Identifier="MainDialogHost">
+        <!--  Main Container with Modern Design  -->
+        <Border
+            Background="{StaticResource ModernBackgroundBrush}"
+            BoxShadow="{StaticResource ModernShadow}"
+            CornerRadius="12"
+            Margin="8">
+
+            <DockPanel>
+                <!--  Custom Title Bar  -->
+                <Border
+                    Background="{StaticResource HeaderGradientBrush}"
+                    CornerRadius="12,12,0,0"
+                    DockPanel.Dock="Top"
+                    Height="40">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  App Icon and Title  -->
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="16,0,0,0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                            <Image
+                                Height="24"
+                                Margin="0,0,12,0"
+                                Source="avares://MyDesigner.XamlDesigner/Assets/Visual_Studio_Icon_2022.png"
+                                Width="24" />
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Foreground="White"
+                                Text="{Binding Title}"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!--  Window Controls  -->
+                        <StackPanel
+                            Grid.Column="2"
+                            Margin="0,0,8,0"
+                            Orientation="Horizontal">
+                            <Button
+                                Classes="ModernIconButton"
+                                Click="Minimize_Click"
+                                ToolTip.Tip="Minimize"
+                                x:Name="MinimizeButton">
+                                <Path
+                                    Data="M0,0 L10,0"
+                                    Stroke="White"
+                                    StrokeThickness="2" />
+                            </Button>
+                            <Button
+                                Classes="ModernIconButton"
+                               Click="MaximizeRestore_Click"
+                                ToolTip.Tip="Maximize"
+                                x:Name="MaximizeButton">
+                                <Path
+                                    Data="M0,0 L10,0 L10,10 L0,10 Z"
+                                    Fill="Transparent"
+                                    Stroke="White"
+                                    StrokeThickness="2" />
+                            </Button>
+                            <Button
+                                Classes="ModernIconButton"
+                              Click="Close_Click"
+                                ToolTip.Tip="Close"
+                                x:Name="CloseButton">
+                                <Path
+                                    Data="M0,0 L10,10 M10,0 L0,10"
+                                    Stroke="White"
+                                    StrokeThickness="2" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--  Hidden Menu for Context  -->
+                <Menu DockPanel.Dock="Top" IsVisible="True">
+                    <MenuItem Header="File">
+
+                        <MenuItem Command="{Binding CloseCommand}" Header="Close" />
+                        <MenuItem Command="{Binding CloseAllCommand}" Header="CloseAll" />
+                        <Separator />
+
+                        <MenuItem Header="Convert To">
+                            <MenuItem Command="{Binding SaveAsAvaloniaCommand}" Header="Convert to Avalonia" />
+                            <MenuItem Command="{Binding SaveAsMauiCommand}" Header="Convert to MAUI" />
+                            <MenuItem Command="{Binding SaveAsUnoCommand}" Header="Convert to Uno" />
+                        </MenuItem>
+                        <MenuItem Command="{Binding SaveAllCommand}" Header="Save All" />
+                        <Separator />
+                        <MenuItem Header="Recent Files" ItemsSource="{Binding RecentFiles}">
+                            <MenuItem.ItemTemplate>
+                                <DataTemplate>
+                                    <MenuItem
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).OpenRecentFileCommand}"
+                                        CommandParameter="{Binding}"
+                                        Header="{Binding}" />
+                                </DataTemplate>
+                            </MenuItem.ItemTemplate>
+                        </MenuItem>
+                        <MenuItem x:Name="DelFiles"
+                            Click="DelFiles_Click"
+                            Header="Clear Files"
+                            IsEnabled="{Binding RecentFiles.Count, Converter={StaticResource FalseWhenZero}}" /> 
+                        <Separator />
+                        <MenuItem Command="{Binding ExitCommand}" Header="Exit" />
+                    </MenuItem>
+                    <MenuItem Header="Build">
+                        <MenuItem Command="{Binding BuildCommand}" Header="Build Project">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Save_32x32.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding RebuildCommand}" Header="Rebuild Project">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Convert_32x32.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Command="{Binding RunCommand}" Header="Run Project">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Play_32x32.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding StopCommand}" Header="Stop Project">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Stop.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <MenuItem Header="View" x:Name="ViewMenu">
+                        <MenuItem
+                            Header="Solution Explorer"
+                            IsChecked="True"
+                            Tag="Projects" />
+                        <Separator />
+                        <MenuItem Header="Error List" Tag="Errors" />
+                        <MenuItem
+                            Header="Toolbox"
+                            IsChecked="True"
+                            Tag="Toolbox" />
+
+                        <MenuItem Header="Image Picker" Tag="ImagePicker" />
+                        <MenuItem Header="Page Explorer" Tag="Thumbnail" />
+
+
+                        <Separator />
+                        <MenuItem Header="Other Windows">
+                            <MenuItem
+                                Header="Properties Window"
+                                IsChecked="True"
+                                Tag="Properties" />
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Tools">
+                        <MenuItem Header="Settings - الإعدادات">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Reference.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Grid Settings - إعدادات الشبكة">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Reference.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Database Connection Manager">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/Reference.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="Report Viewer - عارض التقارير">
+                            <MenuItem.Icon>
+                                <Image
+                                    Height="16"
+                                    Source="avares://MyDesigner.XamlDesigner/Assets/TableOfContent_32x32.png"
+                                    Width="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+
+                <!--  Office-Style Toolbar  -->
+                <Border
+                    Background="#FFF0F0F0"
+                    BorderBrush="#FFCCCCCC"
+                    BorderThickness="0,0,0,1"
+                    DockPanel.Dock="Top"
+                    Height="120">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="8,4" Orientation="Horizontal">
+
+                            <!--  Project Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Project" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding NewProjectCommand}"
+                                            ToolTip.Tip="New Project (Ctrl+Shift+P)"
+                                            x:Name="mnNewProject">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/New_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="New" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Text="Project" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding OpenProjectCommand}"
+                                            ToolTip.Tip="Open (Ctrl+O)"
+                                            x:Name="mnOpenProject">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Open_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Open" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  File Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="File" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding SaveCommand}"
+                                            ToolTip.Tip="Save (Ctrl+S)"
+                                            x:Name="mnSave">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Save_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Save" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding SaveAsCommand}"
+                                            ToolTip.Tip="Save As (Ctrl+Shift+S)"
+                                            x:Name="mnSaveAs">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/SaveTo_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Save" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Text="As" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding SaveAllCommand}"
+                                            ToolTip.Tip="Save All"
+                                            x:Name="mnSaveAll">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Save_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Save" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Text="All" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Clipboard Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Clipboard" />
+                                    <StackPanel Orientation="Vertical">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding CutCommand}"
+                                            ToolTip.Tip="Cut (Ctrl+X)"
+                                            x:Name="btnCut">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Cut_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Cut" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding CopyCommand}"
+                                            ToolTip.Tip="Copy (Ctrl+C)"
+                                            x:Name="btnCopy">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Copy_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Copy" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding PasteCommand}"
+                                            ToolTip.Tip="Paste (Ctrl+V)"
+                                            x:Name="btnPaste">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Paste_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Paste" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Edit Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Edit" />
+                                    <StackPanel Orientation="Vertical">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding UndoCommand}"
+                                            ToolTip.Tip="Undo (Ctrl+Z)"
+                                            x:Name="btnUndo">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Undo_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Undo" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding RedoCommand}"
+                                            ToolTip.Tip="Redo (Ctrl+Y)"
+                                            x:Name="btnRedo">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Redo_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Redo" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding SelectAllCommand}"
+                                            ToolTip.Tip="Select All (Ctrl+A)"
+                                            x:Name="btnSelectAll">
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <Image
+                                                    Height="16"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/SelectAll_16x.png"
+                                                    Width="16" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Select All" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Build Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Build" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding BuildCommand}"
+                                            ToolTip.Tip="Build (F6)"
+                                            x:Name="btnBuild">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Save_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Build" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding RebuildCommand}"
+                                            ToolTip.Tip="Rebuild (Ctrl+Shift+B)"
+                                            x:Name="btnRebuild">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Convert_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Rebuild" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Debug Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Debug" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding RunCommand}"
+                                            ToolTip.Tip="Run (Shift+F5)"
+                                            x:Name="mStart">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Play_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Run" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding StopCommand}"
+                                            ToolTip.Tip="Stop"
+                                            x:Name="mStop">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Stop.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Stop" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            Command="{Binding RefreshCommand}"
+                                            ToolTip.Tip="Refresh (F5)"
+                                            x:Name="btnRestart">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Refresh_16x.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Refresh" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Tools Group  -->
+                            <Border
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="0,0,1,0"
+                                Margin="0,0,4,0"
+                                Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Tools" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            ToolTip.Tip="Database Manager"
+                                            x:Name="btnDatabaseManager">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Database_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Database" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            ToolTip.Tip="View Reports"
+                                            x:Name="btnReportViewer">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/TableOfContent_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="View" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Text="Reports" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Classes="OfficeToolbarButton"
+                                            ToolTip.Tip="Convert to other platforms"
+                                            x:Name="mWpfToPlatforms">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <Image
+                                                    Height="32"
+                                                    Source="avares://MyDesigner.XamlDesigner/Assets/Convert_32x32.png"
+                                                    Width="32" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,2,0,0"
+                                                    Text="Convert" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--  Visual Studio Group  -->
+                            <Border Padding="8,4">
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="10"
+                                        Foreground="#FF666666"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,4"
+                                        Text="Visual Studio" />
+                                    <Button
+                                        Classes="OfficeToolbarButton"
+                                        Command="{Binding GenerateProjectCommand}"
+                                        ToolTip.Tip="Open in Visual Studio"
+                                        x:Name="btnGenerateProject">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Image
+                                                Height="32"
+                                                Source="avares://MyDesigner.XamlDesigner/Assets/Visual_Studio_Icon_2022.png"
+                                                Width="32" />
+                                            <TextBlock
+                                                FontSize="10"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,2,0,0"
+                                                Text="Open" />
+                                            <TextBlock
+                                                FontSize="10"
+                                                HorizontalAlignment="Center"
+                                                Text="in VS" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!--  Main Content Area  -->
+                <Grid Grid.Row="3">
+                    <!--  Dock.Avalonia Layout  -->
+                    <dock:DockControl Layout="{Binding Layout}" />
+                </Grid>
+
+            </DockPanel>
+        </Border>
+
+    </dialogHost:DialogHost>
+
+
+
 </UserControl>

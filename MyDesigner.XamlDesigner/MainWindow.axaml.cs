@@ -11,6 +11,7 @@ using Avalonia.Input;
 using MyDesigner.XamlDesigner.Configuration;
 using MyDesigner.XamlDesigner.ViewModels;
 
+
 namespace MyDesigner.XamlDesigner;
 
 public partial class MainWindow : Window
@@ -129,6 +130,7 @@ public partial class MainWindow : Window
     {
         try
         {
+            Environment.Exit(0);
             if (!Shell.Instance.PrepareExit())
             {
                 e.Cancel = true;

@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:MyDesigner.XamlDesigner.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="MyDesigner.XamlDesigner.Views.MessageDialog"
+             x:DataType="local:MessageDialog"
+             d:DesignHeight="200"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!-- Icon Paths -->
+        <StreamGeometry x:Key="InfoIcon">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,7H13V9H11V7M11,11H13V17H11V11Z</StreamGeometry>
+        <StreamGeometry x:Key="WarningIcon">M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z</StreamGeometry>
+        <StreamGeometry x:Key="ErrorIcon">M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z</StreamGeometry>
+        <StreamGeometry x:Key="SuccessIcon">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z</StreamGeometry>
+    </UserControl.Resources>
+
+    <Border Background="White"
+            BorderBrush="#FFCCCCCC"
+            BorderThickness="1"
+            CornerRadius="8"
+            MinWidth="350"
+            MaxWidth="500"
+            Padding="0">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Background="#FF007ACC"
+                    CornerRadius="8,8,0,0"
+                    Padding="20,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Path Grid.Column="0"
+                          Width="24"
+                          Height="24"
+                          Margin="0,0,15,0"
+                          Fill="White"
+                          Stretch="Uniform"
+                          VerticalAlignment="Center"
+                          x:Name="IconPath" />
+
+                    <!-- Title -->
+                    <TextBlock Grid.Column="1"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Text="{Binding Title}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1"
+                          MaxHeight="300"
+                          Padding="20">
+                <TextBlock FontSize="14"
+                           Foreground="#FF333333"
+                           LineHeight="20"
+                           Text="{Binding Message}"
+                           TextWrapping="Wrap" />
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="2"
+                    Background="#FFF8F9FA"
+                    BorderBrush="#FFEEEEEE"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,8,8"
+                    Padding="20,15">
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Background="#FF007ACC"
+                            BorderThickness="0"
+                            Click="OkButton_Click"
+                            Content="موافق - OK"
+                            CornerRadius="4"
+                            Cursor="Hand"
+                            FontSize="13"
+                            FontWeight="Medium"
+                            Foreground="White"
+                            Padding="20,8"
+                            x:Name="OkButton" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

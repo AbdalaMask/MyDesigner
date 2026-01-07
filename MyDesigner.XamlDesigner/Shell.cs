@@ -8,9 +8,9 @@ using System.Text;
 using System.Xml;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MyDesigner.Design.Services.Integration;
 using MyDesigner.Designer.PropertyGrid;
 using MyDesigner.XamlDesigner.Commands;
+
 using MyDesigner.XamlDesigner.Tools;
 
 namespace MyDesigner.XamlDesigner
@@ -88,9 +88,6 @@ namespace MyDesigner.XamlDesigner
 
         partial void OnCurrentDocumentChanged(Document? oldValue, Document value)
         {
-            FileOpeningLogContext.Info($"[Shell.OnCurrentDocumentChanged] ========== START ==========");
-            FileOpeningLogContext.Info($"[Shell.OnCurrentDocumentChanged] Old value: {oldValue?.Title} ({oldValue?.FilePath})");
-            FileOpeningLogContext.Info($"[Shell.OnCurrentDocumentChanged] New value: {value?.Title} ({value?.FilePath})");
             OnPropertyChanged(nameof(Title));
             
             // Notify that all document-related properties have changed
@@ -98,7 +95,6 @@ namespace MyDesigner.XamlDesigner
             
             // Refresh command states
             RefreshCommandStates();
-            FileOpeningLogContext.Info($"[Shell.OnCurrentDocumentChanged] ========== END ==========");
         }
 
         public void RefreshCommandStates()
@@ -405,53 +401,27 @@ namespace MyDesigner.XamlDesigner
 
         public void Open(string path)
         {
-            OpenWithAssemblies(path, null, null);
-        }
-
-        public void OpenWithAssemblies(string path, string[] assemblyPaths = null, string projectAssemblyName = null)
-        {
             try
             {
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] ========== START OPEN WITH ASSEMBLIES ==========");
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Called with path: {path}");
                 path = Path.GetFullPath(path);
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Full path: {path}");
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Assembly paths ({assemblyPaths?.Length ?? 0}): {string.Join(",", assemblyPaths ?? new string[0])}");
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Project assembly: {projectAssemblyName}");
 
                 _recentFilesService.AddFile(path);
 
-                // Check if document already open
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Checking {Documents.Count} existing documents...");
                 foreach (var doc in Documents)
                 {
-                    FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies]   Comparing: {doc.FilePath} == {path} ? {doc.FilePath == path}");
                     if (doc.FilePath == path)
                     {
-                        FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Document already open, setting as current");
                         CurrentDocument = doc;
-                        FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] CurrentDocument set to: {CurrentDocument?.FilePath}");
-                        FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] ========== END OPEN WITH ASSEMBLIES (reused) ==========");
                         return;
                     }
                 }
 
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Creating new document for: {path}");
-                var newDoc = new Document(path, assemblyPaths, projectAssemblyName);
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Document created, FilePath={newDoc.FilePath}");
-                
+                var newDoc = new Document(path);
                 Documents.Add(newDoc);
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Document added to collection (count={Documents.Count})");
-                
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Setting CurrentDocument to: {newDoc.FilePath}");
                 CurrentDocument = newDoc;
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] CurrentDocument is now: {CurrentDocument?.FilePath}");
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] CurrentDocument.Title: {CurrentDocument?.Title}");
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] ========== END OPEN WITH ASSEMBLIES (new) ==========");
             }
             catch (Exception ex)
             {
-                FileOpeningLogContext.Error($"[Shell.OpenWithAssemblies] EXCEPTION: {ex}");
                 ReportException(ex);
             }
         }

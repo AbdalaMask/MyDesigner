@@ -1,82 +1,19 @@
 <Window
-    Title="{Binding Title}"
-    Width="1200"
+    Background="Transparent"
     Height="800"
+    Width="1200"
+    WindowState="Maximized"
     x:Class="MyDesigner.XamlDesigner.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
     xmlns="https://github.com/avaloniaui"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:designer="clr-namespace:MyDesigner.Designer;assembly=MyDesigner.Designer"
-    xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    xmlns:local="clr-namespace:MyDesigner.XamlDesigner"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:propertyGrid="clr-namespace:MyDesigner.Designer.PropertyGrid;assembly=MyDesigner.Designer"
+     ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        SystemDecorations="None"
     xmlns:views="clr-namespace:MyDesigner.XamlDesigner.Views"
-    xmlns:dock="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
     xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:DataType="vm:MainWindowViewModel">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Window.KeyBindings>
-        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
-        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
-        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
-        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
-        <KeyBinding Gesture="Ctrl+W" Command="{Binding CloseCommand}" />
-        <KeyBinding Gesture="Alt+F4" Command="{Binding ExitCommand}" />
-        <KeyBinding Gesture="F5" Command="{Binding RunCommand}" />
-    </Window.KeyBindings>
-    
-    <!-- إضافة DialogHost كحاوي رئيسي -->
-    <dialogHost:DialogHost Identifier="BrushEditorDialog">
-        <DockPanel>
-            
-            <!-- Menu Bar -->
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="File">
-                    <MenuItem Header="New" Command="{Binding NewCommand}" InputGesture="Ctrl+N" />
-                    <MenuItem Header="Open" Command="{Binding OpenCommand}" InputGesture="Ctrl+O" />
-                    <Separator />
-                    <MenuItem Header="Close" Command="{Binding CloseCommand}" InputGesture="Ctrl+W" />
-                    <MenuItem Header="Close All" Command="{Binding CloseAllCommand}" />
-                    <Separator />
-                    <MenuItem Header="Save" Command="{Binding SaveCommand}" InputGesture="Ctrl+S" />
-                    <MenuItem Header="Save As" Command="{Binding SaveAsCommand}" InputGesture="Ctrl+Shift+S" />
-                    <MenuItem Header="Save All" Command="{Binding SaveAllCommand}" />
-                    <Separator />
-                    <MenuItem Header="Recent Files" ItemsSource="{Binding RecentFiles}">
-                        <MenuItem.ItemTemplate>
-                            <DataTemplate>
-                                <MenuItem Header="{Binding}" 
-                                          Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).OpenRecentFileCommand}"
-                                          CommandParameter="{Binding}" />
-                            </DataTemplate>
-                        </MenuItem.ItemTemplate>
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem Header="Exit" Command="{Binding ExitCommand}" InputGesture="Alt+F4" />
-                </MenuItem>
-                <MenuItem Header="Edit">
-                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" InputGesture="Ctrl+Z" />
-                    <MenuItem Header="Redo" Command="{Binding RedoCommand}" InputGesture="Ctrl+Y" />
-                    <Separator />
-                    <MenuItem Header="Cut" Command="{Binding CutCommand}" InputGesture="Ctrl+X" />
-                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGesture="Ctrl+C" />
-                    <MenuItem Header="Paste" Command="{Binding PasteCommand}" InputGesture="Ctrl+V" />
-                    <MenuItem Header="Delete" Command="{Binding DeleteCommand}" InputGesture="Delete" />
-                    <MenuItem Header="Select All" Command="{Binding SelectAllCommand}" InputGesture="Ctrl+A" />
-                    <Separator />
-                    <MenuItem Header="Refresh" Command="{Binding RefreshCommand}" InputGesture="F5" />
-                    <MenuItem Header="Find" Command="{Binding FindCommand}" InputGesture="Ctrl+F" />
-                </MenuItem>
-                <MenuItem Header="Test">
-                    <MenuItem Header="Run" Command="{Binding RunCommand}" InputGesture="F5" />
-                    <MenuItem Header="Render to Bitmap" Command="{Binding RenderToBitmapCommand}" />
-                </MenuItem>
-            </Menu>
 
-            <!-- Dock.Avalonia Layout -->
-            <views:MainView />
-
-        </DockPanel>
-    </dialogHost:DialogHost>
+    <!--  Dock.Avalonia Layout  -->
+    <views:MainView />
 </Window>

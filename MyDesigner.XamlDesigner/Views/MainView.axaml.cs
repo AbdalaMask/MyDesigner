@@ -1,15 +1,22 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using MyDesigner.XamlDesigner.Configuration;
 using MyDesigner.XamlDesigner.ViewModels;
 using System;
 
 namespace MyDesigner.XamlDesigner.Views;
 
 public partial class MainView : UserControl
-{
+{  
+    // ÕﬁÊ· «·„Ì“«  «·„Õ”‰…
+    private MyDesigner.XamlDom.XamlTypeFinder _typeFinder;
+    private MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider _xamlCompletionProvider;
+    private MyDesigner.Common.Controls.SimpleIntelliSenseProvider _simpleIntelliSenseProvider;
     public MainView()
     {
         InitializeComponent();
+        InitializeIntelliSense();
     }
 
     protected override void OnDataContextChanged(EventArgs e)
@@ -23,8 +30,90 @@ public partial class MainView : UserControl
         }
     }
 
-    private void InitializeComponent()
+    private void InitializeIntelliSense()
     {
-        AvaloniaXamlLoader.Load(this);
+        try
+        {
+            //  ÂÌ∆… „“Êœ IntelliSense ··‹ XAML
+            var xamlCompletionProvider = new MyDesigner.XamlDesigner.Intellisense.XamlCompletionProvider(_typeFinder ?? CreateDefaultTypeFinder());
+
+            //  ÂÌ∆… „“Êœ IntelliSense «·»”Ìÿ ··‹ C#
+            var simpleProvider = new MyDesigner.Common.Controls.SimpleIntelliSenseProvider();
+
+            // Õ›Ÿ «·„—«Ã⁄ ··«” Œœ«„ ·«Õﬁ«
+            _xamlCompletionProvider = xamlCompletionProvider;
+            _simpleIntelliSenseProvider = simpleProvider;
+
+            System.Diagnostics.Debug.WriteLine(" „  ÂÌ∆… IntelliSense »‰Ã«Õ");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Œÿ√ ›Ì  ÂÌ∆… IntelliSense: {ex.Message}");
+        }
+    }
+    private MyDesigner.XamlDom.XamlTypeFinder CreateDefaultTypeFinder()
+    {
+        // ≈‰‘«¡ TypeFinder «› —«÷Ì
+        try
+        {
+            return new MyDesigner.XamlDom.XamlTypeFinder();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+    // œ«·… „”«⁄œ… ··Õ’Ê· ⁄·Ï «·‰«›–… «·√’·
+    private Window GetParentWindow()
+    {
+        // TopLevel ÂÊ «·ﬂ·«” «·√”«”Ì ··‰Ê«›–° GetTopLevel  »ÕÀ ›Ì «·‘Ã—… «·„—∆Ì…
+        return TopLevel.GetTopLevel(this) as Window;
+    }
+
+    private void Minimize_Click(object sender, RoutedEventArgs e)
+    {
+        var window = GetParentWindow();
+        if (window != null)
+        {
+            window.WindowState = WindowState.Minimized;
+        }
+    }
+
+    private void MaximizeRestore_Click(object sender, RoutedEventArgs e)
+    {
+        var window = GetParentWindow();
+        if (window != null)
+        {
+            //  »œÌ· »Ì‰ Ê÷⁄ «· ﬂ»Ì— (Maximized) Ê«·Ê÷⁄ «·ÿ»Ì⁄Ì (Normal)
+            if (window.WindowState == WindowState.Maximized)
+            {
+                window.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                window.WindowState = WindowState.Maximized;
+            }
+        }
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
+    {
+        var window = GetParentWindow();
+        // «” œ⁄«¡ œ«·… «·≈€·«ﬁ ⁄·Ï «·‰«›–… «·√’·
+        window?.Close();
+    }
+
+
+    private void DelFiles_Click(object sender, RoutedEventArgs e)
+    {
+        if (Settings.Default.RecentFiles != null)
+        {
+            Settings.Default.RecentFiles.Clear();
+            Settings.Default.RecentFiles = null;
+        }
+
+        Shell.Instance.RecentFiles.Clear();
+        DelFiles.ClearValue(MenuItem.ItemsSourceProperty);
+        //SaveSettings();
     }
 }

@@ -1,20 +1,20 @@
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Dock.Model.Core;
+using MyDesigner.XamlDesigner.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Dock.Model.Core;
 
 namespace MyDesigner.XamlDesigner.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase
-    {
-        [ObservableProperty]
-        private string _greeting = "Welcome to Avalonia!";
-    }
     public partial class MainWindowViewModel : ViewModelBase
     {
+        public static Services.DialogService dialogService = new Services.DialogService();
+
         [ObservableProperty]
         public string title;
 
@@ -104,7 +104,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
             // Test Commands
             RunCommand = new RelayCommand(Shell.Instance.Run, () => Shell.Instance.CurrentDocument != null);
-            RenderToBitmapCommand = new RelayCommand(Shell.Instance.RenderToBitmap, () => Shell.Instance.CurrentDocument != null);
+            
         }
 
         // File Commands
@@ -130,7 +130,27 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         // Test Commands
         public RelayCommand RunCommand { get; private set; }
-        public RelayCommand RenderToBitmapCommand { get; private set; }
+     
+
+        public RelayCommand BuildCommand { get; private set; }
+
+        public RelayCommand RebuildCommand { get; private set; }
+
+        public RelayCommand StopCommand { get; private set; }
+
+
+        public RelayCommand MinimizeCommand { get; private set; }
+
+        public RelayCommand MaximizeCommand { get; private set; }
+
+        public RelayCommand GenerateProjectCommand { get; private set; }
+        
+        // Convert To
+        public RelayCommand SaveAsAvaloniaCommand { get; private set; }
+        
+        public RelayCommand SaveAsMauiCommand { get; private set; }
+        public RelayCommand SaveAsUnoCommand { get; private set; }
+        
 
         [RelayCommand]
         private void OpenRecentFile(string filePath)
@@ -148,6 +168,60 @@ namespace MyDesigner.XamlDesigner.ViewModels
             }
         }
 
+        [RelayCommand]
+        private static async void NewProject()
+        {
+            try
+            { 
+              
+                var newProjectDialog = new NewProjectWindow();
+                var result = await dialogService.ShowDialogAsync(newProjectDialog);
+
+                //if (result == true)
+                //{
+                  
+                //    await dialogService.ShowMessageAsync(" „ ≈‰‘«¡ „‘—Ê⁄ ÃœÌœ »‰Ã«Õ!", "‰ÃÕ - Success");
+                //}
+            }
+            catch (Exception ex)
+            {
+                var dialogService = new Services.DialogService();
+                await dialogService.ShowErrorAsync($"Œÿ√ ›Ì ≈‰‘«¡ „‘—Ê⁄ ÃœÌœ: {ex.Message}", "Œÿ√ - Error");
+            }
+        }
+        [RelayCommand]
+        private async void OpenProject()
+        {
+            try
+            {
+                // ⁄—÷ ‰«›–… «Œ Ì«— ‰Ê⁄ «·› Õ «·ÃœÌœ…
+                var dialog = new OpenProjectDialog();
+                var result = await dialogService.ShowDialogAsync<OpenProjectDialog>(dialog);
+               
+                //if (result == true)
+                //{
+                //    var choice = result.SelectedOption;
+
+                //    switch (choice)
+                //    {
+                //        case "project":
+                //            await OpenProject();
+                //            break;
+                //        case "folder":
+                //            await OpenFolderDialog();
+                //            break;
+                //        case "file":
+                //            await OpenFile();
+                //            break;
+                //    }
+                //}
+            }
+            catch (Exception ex)
+            {
+                var dialogService = new Services.DialogService();
+                await dialogService.ShowErrorAsync($"Œÿ√ ›Ì › Õ «·„‘—Ê⁄: {ex.Message}", "Œÿ√ - Error");
+            }
+        }
         partial void OnCurrentDocumentChanged(Document value)
         {
             // Update Shell's current document
@@ -209,7 +283,11 @@ namespace MyDesigner.XamlDesigner.ViewModels
             if (RefreshCommand is RelayCommand refreshCmd) refreshCmd.NotifyCanExecuteChanged();
             
             if (RunCommand is RelayCommand runCmd) runCmd.NotifyCanExecuteChanged();
-            if (RenderToBitmapCommand is RelayCommand renderCmd) renderCmd.NotifyCanExecuteChanged();
+            if (NewProjectCommand is RelayCommand renderCmd) renderCmd.NotifyCanExecuteChanged();
         }
+
+
+
+        
     }
 }

@@ -1,0 +1,301 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="MyDesigner.XamlDesigner.DatabaseConnectionManager">
+  <UserControl.Styles>
+        <!-- äãØ ÇáÃÒÑÇÑ -->
+        <Style Selector="Button.ModernButton">
+            <Setter Property="Background" Value="#FF007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="CornerRadius" Value="3" />
+        </Style>
+        
+        <Style Selector="Button.ModernButton:pointerover">
+            <Setter Property="Background" Value="#FF1C97EA" />
+        </Style>
+        
+        <Style Selector="Button.ModernButton:pressed">
+            <Setter Property="Background" Value="#FF005A9E" />
+        </Style>
+
+        <!-- äãØ TextBox -->
+        <Style Selector="TextBox.ModernTextBox">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2D2D30" />
+            <Setter Property="BorderBrush" Value="#FF007ACC" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!-- äãØ ComboBox -->
+        <Style Selector="ComboBox.ModernComboBox">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF2D2D30" />
+            <Setter Property="BorderBrush" Value="#FF007ACC" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- ÇáÚäæÇä -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,20"
+            FontSize="24"
+            FontWeight="Bold"
+            Foreground="#FF2D2D30"
+            Text="ÅÏÇÑÉ ÇÊÕÇáÇÊ ÞæÇÚÏ ÇáÈíÇäÇÊ" />
+
+        <!-- ÇáãÍÊæì ÇáÑÆíÓí -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- ÞÇÆãÉ ÇáÇÊÕÇáÇÊ -->
+            <Border
+                Grid.Column="0"
+                Margin="0,0,10,0"
+                Background="White"
+                BorderBrush="#FFCCCCCC"
+                BorderThickness="1"
+                CornerRadius="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="10"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="#FF2D2D30"
+                        Text="ÇáÇÊÕÇáÇÊ ÇáãÍÝæÙÉ" />
+
+                    <ListBox
+                        x:Name="ConnectionsList"
+                        Grid.Row="1"
+                        Margin="5"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Foreground="#FF2D2D30"
+                        SelectionChanged="ConnectionsList_SelectionChanged" />
+
+                    <StackPanel
+                        Grid.Row="2"
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="70"
+                            Click="NewConnection_Click"
+                            Content="ÌÏíÏ"
+                            Classes="ModernButton" />
+                        <Button
+                            Width="70"
+                            Background="#FFE81123"
+                            Click="DeleteConnection_Click"
+                            Content="ÍÐÝ"
+                            Classes="ModernButton" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ÊÝÇÕíá ÇáÇÊÕÇá -->
+            <Border
+                Grid.Column="1"
+                Background="White"
+                BorderBrush="#FFCCCCCC"
+                BorderThickness="1"
+                CornerRadius="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <TextBlock
+                            Margin="0,0,0,15"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="#FF2D2D30"
+                            Text="ÊÝÇÕíá ÇáÇÊÕÇá" />
+
+                        <!-- ÇÓã ÇáÇÊÕÇá -->
+                        <TextBlock
+                            Margin="5,5,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ÇÓã ÇáÇÊÕÇá:" />
+                        <TextBox
+                            x:Name="ConnectionNameTextBox"
+                            Classes="ModernTextBox"
+                            Text="ÇÊÕÇá ÌÏíÏ" />
+
+                        <!-- äæÚ ÞÇÚÏÉ ÇáÈíÇäÇÊ -->
+                        <TextBlock
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="äæÚ ÞÇÚÏÉ ÇáÈíÇäÇÊ:" />
+                        <ComboBox
+                            x:Name="DatabaseTypeComboBox"
+                            SelectionChanged="DatabaseType_SelectionChanged"
+                            Classes="ModernComboBox">
+                            <ComboBoxItem Content="SQL Server" IsSelected="True" />
+                            <ComboBoxItem Content="MySQL" />
+                            <ComboBoxItem Content="PostgreSQL" />
+                            <ComboBoxItem Content="SQLite" />
+                            <ComboBoxItem Content="Oracle" />
+                            <ComboBoxItem Content="MongoDB" />
+                            <ComboBoxItem Content="Access" />
+                        </ComboBox>
+
+                        <!-- Server/Host -->
+                        <TextBlock
+                            x:Name="ServerLabel"
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ÇáÎÇÏã (Server):" />
+                        <TextBox
+                            x:Name="ServerTextBox"
+                            Classes="ModernTextBox"
+                            Text="localhost" />
+
+                        <!-- Port -->
+                        <TextBlock
+                            x:Name="PortLabel"
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ÇáãäÝÐ (Port):" />
+                        <TextBox
+                            x:Name="PortTextBox"
+                            Classes="ModernTextBox"
+                            Text="1433" />
+
+                        <!-- Database Name -->
+                        <TextBlock
+                            x:Name="DatabaseLabel"
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ÇÓã ÞÇÚÏÉ ÇáÈíÇäÇÊ:" />
+                        <TextBox
+                            x:Name="DatabaseNameTextBox"
+                            Classes="ModernTextBox"
+                            Text="MyDatabase" />
+
+                        <!-- Username -->
+                        <TextBlock
+                            x:Name="UsernameLabel"
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ÇÓã ÇáãÓÊÎÏã:" />
+                        <TextBox
+                            x:Name="UsernameTextBox"
+                            Classes="ModernTextBox"
+                            Text="sa" />
+
+                        <!-- Password -->
+                        <TextBlock
+                            x:Name="PasswordLabel"
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="ßáãÉ ÇáãÑæÑ:" />
+                        <TextBox
+                            x:Name="PasswordBox"
+                            Margin="5"
+                            Padding="8"
+                            Background="White"
+                            BorderBrush="#FF007ACC"
+                            BorderThickness="1"
+                            FontSize="13"
+                            Foreground="#FF2D2D30"
+                            PasswordChar="*" />
+
+                        <!-- Connection String -->
+                        <TextBlock
+                            Margin="5,10,5,0"
+                            Foreground="#FF2D2D30"
+                            Text="äÕ ÇáÇÊÕÇá (Connection String):" />
+                        <TextBox
+                            x:Name="ConnectionStringTextBox"
+                            Height="80"
+                            AcceptsReturn="True"
+                            Classes="ModernTextBox"
+                            TextWrapping="Wrap" />
+
+                        <!-- ÃÒÑÇÑ ÇáÅÌÑÇÁÇÊ -->
+                        <StackPanel
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="120"
+                                Click="TestConnection_Click"
+                                Content="ÇÎÊÈÇÑ ÇáÇÊÕÇá"
+                                Classes="ModernButton" />
+                            <Button
+                                Width="100"
+                                Background="#FF107C10"
+                                Click="SaveConnection_Click"
+                                Content="ÍÝÙ"
+                                Classes="ModernButton" />
+                            <Button
+                                Width="130"
+                                Background="#FFF0AB00"
+                                Click="BuildConnectionString_Click"
+                                Content="ÈäÇÁ äÕ ÇáÇÊÕÇá"
+                                Classes="ModernButton" />
+                        </StackPanel>
+
+                        <!-- ÍÇáÉ ÇáÇÊÕÇá -->
+                        <Border
+                            x:Name="StatusBorder"
+                            Margin="5,15,5,5"
+                            Padding="10"
+                            Background="#FFF0F8FF"
+                            BorderBrush="#FF007ACC"
+                            BorderThickness="1"
+                            CornerRadius="3"
+                            IsVisible="False">
+                            <TextBlock
+                                x:Name="StatusTextBlock"
+                                Foreground="#FF2D2D30"
+                                TextWrapping="Wrap" />
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- ÃÒÑÇÑ ÇáÅÛáÇÞ -->
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Width="100"
+                Background="#FF505050"
+                Click="Close_Click"
+                Content="ÅÛáÇÞ"
+                Classes="ModernButton" />
+        </StackPanel>
+    </Grid>
+</UserControl>

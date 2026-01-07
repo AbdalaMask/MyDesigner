@@ -24,10 +24,10 @@ namespace MyDesigner.XamlDesigner
         {
             if (value is bool boolValue)
             {
-                System.Diagnostics.Debug.WriteLine($"CollapsedWhenFalse.Convert: {boolValue} -> {boolValue}");
+                
                 return boolValue; // true = Visible, false = Collapsed (Hidden)
             }
-            System.Diagnostics.Debug.WriteLine($"CollapsedWhenFalse.Convert: {value} (not bool) -> false");
+            
             return false; // Default to hidden if not a boolean
         }
 

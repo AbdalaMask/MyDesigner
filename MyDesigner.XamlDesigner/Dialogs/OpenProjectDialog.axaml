@@ -1,0 +1,238 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="MyDesigner.XamlDesigner.OpenProjectDialog">
+   <UserControl.Styles>
+        <!-- Modern Button Style -->
+        <Style Selector="Button.ModernOptionButton">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#FFE0E0E0" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="20,15" />
+        </Style>
+        
+        <Style Selector="Button.ModernOptionButton:pointerover">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+            <Setter Property="BorderBrush" Value="#FF007ACC" />
+        </Style>
+        
+        <Style Selector="Button.ModernOptionButton:pressed">
+            <Setter Property="Background" Value="#FFE8E8E8" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Margin="40,30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock
+                FontSize="28"
+                FontWeight="Bold"
+                Foreground="#FF007ACC"
+                Text="Open Project" />
+            <TextBlock
+                Margin="0,5,0,0"
+                FontSize="14"
+                Foreground="#FF666666"
+                Text="ماذا تريد أن تفتح؟" />
+        </StackPanel>
+
+        <!-- Separator -->
+        <Border
+            Grid.Row="1"
+            Height="1"
+            Margin="0,10,0,20"
+            Background="#FFE0E0E0" />
+
+        <!-- Options -->
+        <StackPanel
+            Grid.Row="2"
+            Grid.RowSpan="2"
+            Margin="0,0,0,35">
+            <!-- Option 1: Solution/Project -->
+            <Button
+                x:Name="btnOpenProject"
+                Height="90"
+                Click="BtnOpenProject_Click"
+                Classes="ModernOptionButton">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Border
+                        Grid.Column="0"
+                        Width="50"
+                        Height="50"
+                        Margin="0,0,15,0"
+                        Background="#FF007ACC"
+                        CornerRadius="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="28"
+                            Text="📁" />
+                    </Border>
+
+                    <!-- Text -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="#FF333333"
+                            Text="Solution or Project" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="11"
+                            Foreground="#FF666666"
+                            Text="فتح ملف Solution (.sln) أو Project (.csproj)" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="10"
+                            Foreground="#FF999999"
+                            Text="Open a complete solution with multiple projects or a single project file"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <!-- Option 2: Folder -->
+            <Button
+                x:Name="btnOpenFolder"
+                Height="96"
+                Click="BtnOpenFolder_Click"
+                Classes="ModernOptionButton">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Border
+                        Grid.Column="0"
+                        Width="50"
+                        Height="50"
+                        Margin="0,0,15,0"
+                        Background="#FF107C10"
+                        CornerRadius="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="28"
+                            Text="📂" />
+                    </Border>
+
+                    <!-- Text -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="#FF333333"
+                            Text="Folder" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="11"
+                            Foreground="#FF666666"
+                            Text="فتح مجلد يحتوي على ملفات المشروع" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="10"
+                            Foreground="#FF999999"
+                            Text="Browse and open a folder containing project files"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <!-- Option 3: XAML File -->
+            <Button
+                x:Name="btnOpenFile"
+                Height="89"
+                Click="BtnOpenFile_Click"
+                Classes="ModernOptionButton">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Border
+                        Grid.Column="0"
+                        Width="50"
+                        Height="50"
+                        Margin="0,0,15,0"
+                        Background="#FFE81123"
+                        CornerRadius="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="28"
+                            Text="📄" />
+                    </Border>
+
+                    <!-- Text -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="#FF333333"
+                            Text="XAML File" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="11"
+                            Foreground="#FF666666"
+                            Text="فتح ملف XAML واحد فقط" />
+                        <TextBlock
+                            Margin="0,2,0,0"
+                            FontSize="10"
+                            Foreground="#FF999999"
+                            Text="Open a single XAML file for quick editing"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </StackPanel>
+
+        <!-- Footer -->
+        <StackPanel
+            Grid.Row="3"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Width="120"
+                Height="35"
+                Background="White"
+                BorderBrush="#FFCCCCCC"
+                BorderThickness="1"
+                Click="BtnCancel_Click"
+                Content="Cancel - إلغاء"
+                Cursor="Hand"
+                CornerRadius="3"
+                Padding="10,5">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="Background" Value="#FFF0F0F0" />
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

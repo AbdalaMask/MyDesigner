@@ -32,6 +32,13 @@ namespace MyDesigner.XamlDesigner.Configuration
         public string DockLayout { get; set; } = "";
         public List<string> RecentFiles { get; set; } = new List<string>();
         public List<string> AssemblyList { get; set; } = new List<string>();
+        public string ProjectName { get;  set; }
+        public string ProjectType { get;  set; }
+        public string ProjectPath { get;  set; }
+        public double LastPageWidth { get; internal set; }
+        public double LastPageHeight { get; internal set; }
+        public string LastPlatform { get; internal set; }
+        public string? DefaultPlatform { get; internal set; }
 
         private static Settings Load()
         {

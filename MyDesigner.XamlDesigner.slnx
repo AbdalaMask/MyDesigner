@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Libery/CSharpEditor/CSharpEditor.csproj" />
   <Project Path="Libery/MyDesigner.Design/MyDesigner.Design.csproj" />
   <Project Path="Libery/MyDesigner.Designer/MyDesigner.Designer.csproj" />
   <Project Path="Libery/MyDesigner.XamlDom/MyDesigner.XamlDom.csproj" />

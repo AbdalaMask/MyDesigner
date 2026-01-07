@@ -1,0 +1,268 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="MyDesigner.XamlDesigner.PageSizeSettingsWindow">
+  <UserControl.Styles>
+        <!-- Modern Styles -->
+        <Style Selector="TextBox.ModernTextBox">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF333333" />
+            <Setter Property="BorderBrush" Value="#FF007ACC" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style Selector="ComboBox.ModernComboBox">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#FF333333" />
+            <Setter Property="BorderBrush" Value="#FF007ACC" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Height" Value="35" />
+        </Style>
+
+        <Style Selector="Button.ModernButton">
+            <Setter Property="Background" Value="#FF007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="20,10" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        
+        <Style Selector="Button.ModernButton:pointerover">
+            <Setter Property="Background" Value="#FF1C97EA" />
+        </Style>
+        
+        <Style Selector="Button.ModernButton:pressed">
+            <Setter Property="Background" Value="#FF005A9E" />
+        </Style>
+
+        <Style Selector="Button.SecondaryButton">
+            <Setter Property="Background" Value="#FF6C757D" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="20,10" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        
+        <Style Selector="Button.SecondaryButton:pointerover">
+            <Setter Property="Background" Value="#FF5A6268" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock
+                FontSize="24"
+                FontWeight="Bold"
+                Foreground="#FF007ACC"
+                Text="Page Size Settings" />
+            <TextBlock
+                FontSize="14"
+                Foreground="#FF666666"
+                Text="Configure page dimensions for different platforms" />
+        </StackPanel>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- Platform Selection -->
+                <Border BorderBrush="#FFDDDDDD" BorderThickness="1" Padding="10" Margin="0,5" CornerRadius="4">
+                    <StackPanel>
+                        <TextBlock Text="Platform Selection - " FontWeight="SemiBold" Foreground="#FF333333" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Target Platform:" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+                            <ComboBox
+                                x:Name="PlatformComboBox"
+                                Grid.Column="1"
+                                SelectionChanged="PlatformComboBox_SelectionChanged"
+                                Classes="ModernComboBox">
+                                <ComboBoxItem Content="WPF Application" />
+                                <ComboBoxItem Content="Avalonia UI" />
+                                <ComboBoxItem Content="MAUI Application" />
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Preset Sizes -->
+                <Border BorderBrush="#FFDDDDDD" BorderThickness="1" Padding="10" Margin="0,5" CornerRadius="4">
+                    <StackPanel>
+                        <TextBlock Text="Preset Sizes - ÇáãÞÇÓÇÊ ÇáãÍÏÏÉ ãÓÈÞÇð" FontWeight="SemiBold" Foreground="#FF333333" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="Preset:" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+                            <ComboBox
+                                x:Name="PresetComboBox"
+                                Grid.Column="1"
+                                SelectionChanged="PresetComboBox_SelectionChanged"
+                                Classes="ModernComboBox" />
+                            <Button
+                                x:Name="ApplyPresetButton"
+                                Grid.Column="2"
+                                Margin="10,0,0,0"
+                                Click="ApplyPresetButton_Click"
+                                Content="Apply"
+                                Classes="ModernButton" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Custom Dimensions -->
+                <Border BorderBrush="#FFDDDDDD" BorderThickness="1" Padding="10" Margin="0,5" CornerRadius="4">
+                    <StackPanel>
+                        <TextBlock Text="Custom Dimensions - ÇáÃÈÚÇÏ ÇáãÎÕÕÉ" FontWeight="SemiBold" Foreground="#FF333333" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Width -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Width (ÇáÚÑÖ):" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+                            <TextBox
+                                x:Name="WidthTextBox"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Classes="ModernTextBox"
+                                TextChanged="DimensionTextBox_TextChanged" />
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="px" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+
+                            <!-- Height -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,10,0,0" Text="Height (ÇáÇÑÊÝÇÚ):" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+                            <TextBox
+                                x:Name="HeightTextBox"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,10,0,0"
+                                Classes="ModernTextBox"
+                                TextChanged="DimensionTextBox_TextChanged" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" Text="px" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+
+                            <!-- Aspect Ratio -->
+                            <CheckBox
+                                x:Name="MaintainAspectRatioCheckBox"
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Margin="0,15,0,0"
+                                Content="Maintain Aspect Ratio - ÇáÍÝÇÙ Úáì äÓÈÉ ÇáÚÑÖ Åáì ÇáÇÑÊÝÇÚ"
+                                FontSize="13"
+                                Foreground="#FF333333" />
+
+                            <!-- Orientation -->
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="4"
+                                Margin="0,15,0,0"
+                                Orientation="Horizontal">
+                                <TextBlock Text="Orientation:" FontSize="13" Foreground="#FF333333" VerticalAlignment="Center" />
+                                <RadioButton
+                                    x:Name="PortraitRadioButton"
+                                    Margin="10,0,20,0"
+                                    Content="Portrait - ÚãæÏí"
+                                    FontSize="13"
+                                    Foreground="#FF333333"
+                                    GroupName="Orientation" />
+                                <RadioButton
+                                    x:Name="LandscapeRadioButton"
+                                    Content="Landscape - ÃÝÞí"
+                                    FontSize="13"
+                                    Foreground="#FF333333"
+                                    GroupName="Orientation" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Preview -->
+                <Border BorderBrush="#FFDDDDDD" BorderThickness="1" Padding="10" Margin="0,5" CornerRadius="4">
+                    <StackPanel>
+                        <TextBlock Text="Preview - ãÚÇíäÉ" FontWeight="SemiBold" Foreground="#FF333333" Margin="0,0,0,10"/>
+                        <Border Height="200" Background="#FFF8F9FA" BorderBrush="#FFDDDDDD" BorderThickness="1" CornerRadius="4">
+                            <Canvas x:Name="PreviewCanvas" ClipToBounds="True">
+                                <Rectangle
+                                    x:Name="PreviewRectangle"
+                                    Fill="#FF007ACC"
+                                    Opacity="0.3"
+                                    Stroke="#FF007ACC"
+                                    StrokeThickness="2" />
+                                <TextBlock
+                                    x:Name="PreviewLabel"
+                                    Canvas.Left="10"
+                                    Canvas.Top="10"
+                                    FontSize="12"
+                                    Foreground="#FF333333" />
+                            </Canvas>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer Buttons -->
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,20,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                x:Name="ResetButton"
+                Margin="0,0,10,0"
+                Click="ResetButton_Click"
+                Content="Reset - ÅÚÇÏÉ ÊÚííä"
+                Classes="SecondaryButton" />
+            <Button
+                x:Name="CancelButton"
+                Margin="0,0,10,0"
+                Click="CancelButton_Click"
+                Content="Cancel - ÅáÛÇÁ"
+                Classes="SecondaryButton" />
+            <Button
+                x:Name="ApplyButton"
+                Click="ApplyButton_Click"
+                Content="Apply - ÊØÈíÞ"
+                Classes="ModernButton" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

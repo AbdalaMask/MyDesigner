@@ -2,6 +2,10 @@ using Dock.Model.Mvvm.Controls;
 
 namespace MyDesigner.XamlDesigner.ViewModels.Tools
 {
+    public class ProjectExplorerDock : Tool
+    {
+
+    }
     public class ToolboxDock : Tool
     {
        
@@ -18,9 +22,12 @@ namespace MyDesigner.XamlDesigner.ViewModels.Tools
     {
 
     }
-
     public class ThumbnailDock : Tool
     {
-
+         
+    }
+    public class SymbolsDock : Tool
+    {
+        
     }
 }

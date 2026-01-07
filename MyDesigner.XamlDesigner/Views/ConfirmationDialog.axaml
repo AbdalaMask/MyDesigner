@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:MyDesigner.XamlDesigner.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="MyDesigner.XamlDesigner.Views.ConfirmationDialog"
+             x:DataType="local:ConfirmationDialog"
+             d:DesignHeight="200"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <StreamGeometry x:Key="QuestionIcon">M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,17A1.5,1.5 0 0,0 13.5,15.5A1.5,1.5 0 0,0 12,14A1.5,1.5 0 0,0 10.5,15.5A1.5,1.5 0 0,0 12,17M12,5.5C10.07,5.5 8.5,6.93 8.5,8.5H10.5C10.5,8.04 10.96,7.5 11.5,7.5H12.5C13.04,7.5 13.5,8.04 13.5,8.5C13.5,9.5 12.5,9.75 12.5,11H10.5C10.5,9.25 11.5,9 11.5,8.5C11.5,8.22 11.72,8 12,8C12.28,8 12.5,8.22 12.5,8.5C12.5,8.78 12.28,9 12,9C11.72,9 11.5,8.78 11.5,8.5Z</StreamGeometry>
+    </UserControl.Resources>
+
+    <Border Background="White"
+            BorderBrush="#FFCCCCCC"
+            BorderThickness="1"
+            CornerRadius="8"
+            MinWidth="350"
+            MaxWidth="500"
+            Padding="0">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Background="#FFFF9800"
+                    CornerRadius="8,8,0,0"
+                    Padding="20,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon -->
+                    <Path Grid.Column="0"
+                          Width="24"
+                          Height="24"
+                          Data="{StaticResource QuestionIcon}"
+                          Fill="White"
+                          Margin="0,0,15,0"
+                          Stretch="Uniform"
+                          VerticalAlignment="Center" />
+
+                    <!-- Title -->
+                    <TextBlock Grid.Column="1"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Text="{Binding Title}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1"
+                          MaxHeight="300"
+                          Padding="20">
+                <TextBlock FontSize="14"
+                           Foreground="#FF333333"
+                           LineHeight="20"
+                           Text="{Binding Message}"
+                           TextWrapping="Wrap" />
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="2"
+                    Background="#FFF8F9FA"
+                    BorderBrush="#FFEEEEEE"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,8,8"
+                    Padding="20,15">
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Background="Transparent"
+                            BorderBrush="#FFCCCCCC"
+                            BorderThickness="1"
+                            Click="CancelButton_Click"
+                            Content="إلغاء - Cancel"
+                            CornerRadius="4"
+                            Cursor="Hand"
+                            FontSize="13"
+                            FontWeight="Medium"
+                            Foreground="#FF666666"
+                            Margin="0,0,10,0"
+                            Padding="20,8"
+                            x:Name="CancelButton" />
+                    
+                    <Button Background="#FFFF9800"
+                            BorderThickness="0"
+                            Click="YesButton_Click"
+                            Content="نعم - Yes"
+                            CornerRadius="4"
+                            Cursor="Hand"
+                            FontSize="13"
+                            FontWeight="Medium"
+                            Foreground="White"
+                            Padding="20,8"
+                            x:Name="YesButton" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

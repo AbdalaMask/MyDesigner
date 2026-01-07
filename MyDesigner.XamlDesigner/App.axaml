@@ -14,15 +14,15 @@
     <Application.Resources>
 
         <ResourceDictionary>
-                   <local:CollapsedWhenFalse x:Key="CollapsedWhenFalse" />
-                    <local:FalseWhenZero x:Key="FalseWhenZero" />
+            <local:CollapsedWhenFalse x:Key="CollapsedWhenFalse" />
+            <local:FalseWhenZero x:Key="FalseWhenZero" />
             <ResourceDictionary.MergedDictionaries>
 
-                 
+                <ResourceInclude Source="avares://MyDesigner.XamlDesigner/Assets/Icons.axaml" />
 
                 <ResourceDictionary>
                     <ControlRecycling x:Key="ControlRecyclingKey" />
-                  
+
                     <ResourceDictionary.ThemeDictionaries>
                         <ResourceDictionary x:Key="Default">
                             <SolidColorBrush x:Key="TextControlBackground">#EFEFEF</SolidColorBrush>
@@ -59,8 +59,10 @@
         <DockFluentTheme />
         <StyleInclude Source="avares://MyDesigner.Designer/themes/generic.axaml" />
         <StyleInclude Source="avares://MyDesigner.XamlDesigner/Themes/Generic.axaml" />
-         <!-- AvaloniaEdit styles (required!) -->
-    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <!--  AvaloniaEdit styles (required!)  -->
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+      
         <DockFluentTheme />
 
         <Style Selector="DockControl">
@@ -102,6 +104,81 @@
         <Style Selector="ToolChromeControl">
             <Setter Property="Background" Value="Transparent" />
         </Style>
+
+
+        <!--
+        ~1~  تحسين نمط TreeView  @1@
+        <Style Selector="TreeView">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+            <Setter Property="BorderBrush" Value="#FFCCCEDB" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        ~1~  تحسين نمط TreeViewItem  @1@
+        <Style Selector="TreeViewItem">
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Margin" Value="0,1,0,1" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style Selector="TreeViewItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FF007ACC" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="TreeViewItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FFE5F3FF" />
+        </Style>
+
+        ~1~  نمط الأزرار الحديث  @1@
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#FF007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="CornerRadius" Value="3" />
+        </Style>
+
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="#FF1C97EA" />
+        </Style>
+
+        <Style Selector="Button:pressed">
+            <Setter Property="Background" Value="#FF005A9E" />
+        </Style>
+
+        <Style Selector="Button:disabled">
+            <Setter Property="Background" Value="#FFCCCCCC" />
+            <Setter Property="Foreground" Value="#FF666666" />
+        </Style>
+
+        ~1~  نمط ContextMenu محسّن  @1@
+        <Style Selector="ContextMenu">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#FFCCCEDB" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        ~1~  نمط MenuItem محسّن  @1@
+        <Style Selector="MenuItem">
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style Selector="MenuItem:selected">
+            <Setter Property="Background" Value="#FFE5F3FF" />
+        </Style>-->
 
     </Application.Styles>
 </Application>
