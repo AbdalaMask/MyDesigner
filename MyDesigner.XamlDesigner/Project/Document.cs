@@ -211,6 +211,8 @@ namespace MyDesigner.XamlDesigner
             }
         }
 
+        public bool InCodeMode { get; internal set; }
+
         partial void OnXamlTextChanged(string value)
         {
             if (text != value)

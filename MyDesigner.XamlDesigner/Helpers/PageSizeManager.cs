@@ -78,9 +78,9 @@ public static class PageSizeManager
             ApplyPlatformSpecificSettings(document, settings);
 
             // تحديث خصائص المستند
-            document.PageWidth = settings.Width;
-            document.PageHeight = settings.Height;
-            document.Platform = Enum.Parse<DocumentType>(settings.Platform);
+            //document.PageWidth = settings.Width;
+            //document.PageHeight = settings.Height;
+            //document.Platform = Enum.Parse<DocumentType>(settings.Platform);
 
             // إشعار بالتغيير
             //document.OnPropertyChanged(nameof(document.PageWidth));
