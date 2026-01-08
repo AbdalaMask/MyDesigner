@@ -78,7 +78,7 @@ public class MyTypeFinder : XamlTypeFinder
     }
 
     /// <summary>
-    /// إنشاء Type Finder خاص بـ Avalonia
+    /// Create Avalonia-specific Type Finder
     /// </summary>
     private static XamlTypeFinder CreateAvaloniaTypeFinder()
     {
@@ -178,7 +178,7 @@ public class MyTypeFinder : XamlTypeFinder
     }
 
     /// <summary>
-    /// تحديث Type Finder بتجميعات جديدة
+    /// Update Type Finder with new assemblies
     /// </summary>
     public void RefreshAssemblies()
     {
@@ -201,7 +201,7 @@ public class MyTypeFinder : XamlTypeFinder
     }
 
     /// <summary>
-    /// البحث عن نوع بالاسم
+    /// Search for type by name
     /// </summary>
     public Type FindTypeByName(string typeName, string namespaceName = null)
     {
@@ -241,7 +241,7 @@ public class MyTypeFinder : XamlTypeFinder
     }
 
     /// <summary>
-    /// الحصول على جميع الأنواع المتاحة لفئة معينة
+    /// Get all available types for specific class
     /// </summary>
     public List<Type> GetAvailableTypes(Type baseType)
     {

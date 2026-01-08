@@ -9,7 +9,7 @@ using MyDesigner.XamlDesigner.Configuration;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// مدير إعدادات مقاسات الصفحة للمنصات المختلفة
+/// Page size settings manager for different platforms
 /// </summary>
 public static class PageSizeManager
 {
@@ -51,7 +51,7 @@ public static class PageSizeManager
     };
 
     /// <summary>
-    /// الحصول على الإعدادات الافتراضية لمنصة معينة
+    /// Get default settings for specific platform
     /// </summary>
     public static PageSizeSettings GetDefaultSettings(DocumentType documentType)
     {
@@ -61,7 +61,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات مقاس الصفحة على مستند
+    /// Apply page size settings to document
     /// </summary>
     public static void ApplyPageSizeToDocument(Document document, PageSizeSettings settings)
     {
@@ -94,7 +94,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق الإعدادات الخاصة بكل منصة
+    /// Apply platform-specific settings
     /// </summary>
     private static void ApplyPlatformSpecificSettings(Document document, PageSizeSettings settings)
     {
@@ -113,7 +113,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات WPF
+    /// Apply WPF settings
     /// </summary>
     private static void ApplyWpfSettings(Document document, WpfPageSettings wpfSettings)
     {
@@ -124,7 +124,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات Avalonia
+    /// Apply Avalonia settings
     /// </summary>
     private static void ApplyAvaloniaSettings(Document document, AvaloniaPageSettings avaloniaSettings)
     {
@@ -135,7 +135,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات MAUI
+    /// Apply MAUI settings
     /// </summary>
     private static void ApplyMauiSettings(Document document, MauiPageSettings mauiSettings)
     {
@@ -146,7 +146,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحديث XAML لـ WPF
+    /// Update XAML for WPF
     /// </summary>
     private static void UpdateXamlForWpf(Document document, WpfPageSettings settings)
     {
@@ -170,7 +170,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحديث XAML لـ Avalonia
+    /// Update XAML for Avalonia
     /// </summary>
     private static void UpdateXamlForAvalonia(Document document, AvaloniaPageSettings settings)
     {
@@ -192,7 +192,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحديث XAML لـ MAUI
+    /// Update XAML for MAUI
     /// </summary>
     private static void UpdateXamlForMaui(Document document, MauiPageSettings settings)
     {
@@ -210,7 +210,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحديث خاصية في XAML
+    /// Update attribute in XAML
     /// </summary>
     private static string UpdateXamlAttribute(string xamlContent, string attributeName, string attributeValue)
     {
@@ -232,7 +232,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// إنشاء نسخة من الإعدادات
+    /// Create copy of settings
     /// </summary>
     private static PageSizeSettings CloneSettings(PageSizeSettings original)
     {
@@ -260,7 +260,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// الحصول على المقاسات الشائعة لمنصة معينة
+    /// Get common sizes for specific platform
     /// </summary>
     public static List<PageSizePreset> GetCommonSizesForPlatform(DocumentType documentType)
     {
@@ -294,7 +294,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// التحقق من صحة الإعدادات
+    /// Validate settings
     /// </summary>
     public static bool ValidateSettings(PageSizeSettings settings)
     {
@@ -318,7 +318,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// حفظ الإعدادات في ملف التكوين
+    /// Save settings to configuration file
     /// </summary>
     public static void SaveSettings(PageSizeSettings settings)
     {
@@ -337,7 +337,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحميل الإعدادات المحفوظة
+    /// Load saved settings
     /// </summary>
     public static PageSizeSettings LoadSavedSettings()
     {
@@ -365,7 +365,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات تلقائية ذكية بناءً على نوع المشروع
+    /// Apply smart automatic settings based on project type
     /// </summary>
     public static void ApplyAutoSettings(Document document)
     {
@@ -394,7 +394,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// اكتشاف نوع المنصة من المستند
+    /// Detect platform type from document
     /// </summary>
     private static DocumentType DetectPlatformFromDocument(Document document)
     {
@@ -430,7 +430,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تحديد نوع منصة XAML من المحتوى
+    /// Determine XAML platform type from content
     /// </summary>
     private static DocumentType DetectXamlPlatform(Document document)
     {
@@ -467,7 +467,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// الحصول على إعدادات مثلى للمنصة
+    /// Get optimal settings for platform
     /// </summary>
     private static PageSizeSettings GetOptimalSettingsForPlatform(DocumentType platform, Document document)
     {
@@ -505,7 +505,7 @@ public static class PageSizeManager
     }
 
     /// <summary>
-    /// تطبيق إعدادات احتياطية آمنة
+    /// Apply safe fallback settings
     /// </summary>
     private static void ApplyFallbackSettings(Document document)
     {
@@ -534,7 +534,7 @@ public static class PageSizeManager
 }
 
 /// <summary>
-/// إعدادات مقاس الصفحة
+/// Page size settings
 /// </summary>
 public class PageSizeSettings
 {
@@ -547,7 +547,7 @@ public class PageSizeSettings
 }
 
 /// <summary>
-/// إعدادات صفحة WPF
+/// WPF page settings
 /// </summary>
 public class WpfPageSettings
 {
@@ -556,7 +556,7 @@ public class WpfPageSettings
 }
 
 /// <summary>
-/// إعدادات صفحة Avalonia
+/// Avalonia page settings
 /// </summary>
 public class AvaloniaPageSettings
 {
@@ -565,7 +565,7 @@ public class AvaloniaPageSettings
 }
 
 /// <summary>
-/// إعدادات صفحة MAUI
+/// MAUI page settings
 /// </summary>
 public class MauiPageSettings
 {
@@ -574,7 +574,7 @@ public class MauiPageSettings
 }
 
 /// <summary>
-/// قالب مقاس صفحة
+/// Page size preset
 /// </summary>
 public class PageSizePreset
 {
@@ -591,7 +591,7 @@ public class PageSizePreset
 }
 
 /// <summary>
-/// أنواع المستندات
+/// Document types
 /// </summary>
 public enum DocumentType
 {

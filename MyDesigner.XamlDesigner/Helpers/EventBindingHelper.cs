@@ -9,12 +9,12 @@ using System.Text.RegularExpressions;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// مساعد لربط Events بالـ Code-Behind في Avalonia
+/// Helper for binding Events to Code-Behind in Avalonia
 /// </summary>
 public class EventBindingHelper
 {
     /// <summary>
-    /// إنشاء Event Handler في ملف code-behind
+    /// Create Event Handler in code-behind file
     /// </summary>
     public static (bool success, string filePath, int lineNumber) CreateEventHandler(
         string axamlFilePath,
@@ -93,7 +93,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// استخراج معلومات الـ class من الكود
+    /// Extract class information from code
     /// </summary>
     private static (int closingBracePosition, string className)? ExtractClassInfo(string content)
     {
@@ -134,7 +134,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// إيجاد موضع الإدراج المناسب
+    /// Find appropriate insertion position
     /// </summary>
     private static int FindInsertPosition(string content, int closingBracePosition)
     {
@@ -166,7 +166,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// توليد كود Event Handler لـ Avalonia
+    /// Generate Event Handler code for Avalonia
     /// </summary>
     private static string GenerateEventHandler(string handlerName, string eventName)
     {
@@ -188,7 +188,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// الحصول على signature المناسب للـ Event في Avalonia
+    /// Get appropriate signature for Event in Avalonia
     /// </summary>
     private static string GetAvaloniaEventSignature(string eventName)
     {
@@ -223,7 +223,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// تحديث AXAML لإضافة Event Handler
+    /// Update AXAML to add Event Handler
     /// </summary>
     public static bool UpdateAxamlWithEvent(string axamlContent, string controlName, string eventName, string handlerName)
     {
@@ -260,7 +260,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// الحصول على قائمة Events المتاحة لـ Control في Avalonia
+    /// Get list of available Events for Control in Avalonia
     /// </summary>
     public static List<EventInfo> GetAvailableAvaloniaEvents(Type controlType)
     {
@@ -294,7 +294,7 @@ public class EventBindingHelper
     }
 
     /// <summary>
-    /// تحويل WPF Event إلى Avalonia Event المقابل
+    /// Convert WPF Event to corresponding Avalonia Event
     /// </summary>
     public static string ConvertWpfEventToAvalonia(string wpfEventName)
     {

@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 namespace MyDesigner.XamlDesigner.View;
 
 /// <summary>
-/// فئة لإدارة تشغيل مشاريع WPF/Avalonia/MAUI
+/// Class for managing WPF/Avalonia/MAUI project execution
 /// </summary>
 public class ProjectRunner
 {
     private Process _runningProcess;
 
     /// <summary>
-    /// تشغيل المشروع الحالي
+    /// Run the current project
     /// </summary>
     public async void RunProject()
     {
@@ -63,7 +63,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// تشغيل مشروع WPF
+    /// Run WPF project
     /// </summary>
     private async void RunWpfProject(string projectPath, string projectName)
     {
@@ -97,7 +97,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// تشغيل مشروع Avalonia
+    /// Run Avalonia project
     /// </summary>
     private async void RunAvaloniaProject(string projectPath, string projectName)
     {
@@ -118,7 +118,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// تشغيل مشروع MAUI
+    /// Run MAUI project
     /// </summary>
     private async void RunMauiProject(string projectPath, string projectName)
     {
@@ -141,7 +141,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// البحث عن ملف .csproj
+    /// Search for .csproj file
     /// </summary>
     private string FindCsprojFile(string projectPath, string projectName)
     {
@@ -184,7 +184,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// البحث عن الملف التنفيذي
+    /// Search for executable file
     /// </summary>
     private string FindExecutable(string projectPath, string projectName, string extension)
     {
@@ -199,7 +199,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// تشغيل ملف تنفيذي
+    /// Run executable file
     /// </summary>
     private async void RunExecutable(string exePath)
     {
@@ -219,7 +219,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// بناء وتشغيل المشروع باستخدام dotnet
+    /// Build and run project using dotnet
     /// </summary>
     private async void BuildAndRunProject(string csprojPath, string additionalArgs = "")
     {
@@ -314,7 +314,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// إيقاف المشروع قيد التشغيل
+    /// Stop running project
     /// </summary>
     public async void StopProject()
     {
@@ -337,7 +337,7 @@ public class ProjectRunner
     }
 
     /// <summary>
-    /// التحقق من وجود dotnet CLI
+    /// Check if dotnet CLI exists
     /// </summary>
     public static bool IsDotnetInstalled()
     {

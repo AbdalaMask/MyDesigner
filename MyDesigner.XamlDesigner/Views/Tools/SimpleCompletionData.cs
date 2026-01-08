@@ -9,7 +9,7 @@ using System;
 namespace MyDesigner.Common.Controls
 {
     /// <summary>
-    /// فئة بسيطة لبيانات الإكمال التلقائي - تربط بين CompletionItem و ICompletionData
+    /// Simple class for auto-completion data - links CompletionItem and ICompletionData
     /// </summary>
     public class SimpleCompletionData : ICompletionData
     {
@@ -58,7 +58,7 @@ namespace MyDesigner.Common.Controls
     }
 
     /// <summary>
-    /// عنصر إكمال بسيط للتوافق مع AvalonEdit
+    /// Simple completion item for AvalonEdit compatibility
     /// </summary>
     public class AvalonEditCompletionItem
     {
@@ -78,7 +78,7 @@ namespace MyDesigner.Common.Controls
         }
         
         /// <summary>
-        /// تحويل من CompletionItem إلى AvalonEditCompletionItem
+        /// Convert from CompletionItem to AvalonEditCompletionItem
         /// </summary>
         public static AvalonEditCompletionItem FromCompletionItem(CompletionItem item)
         {

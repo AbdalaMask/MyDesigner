@@ -17,6 +17,12 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         InitializeIntelliSense();
+
+        // Register ProjectExplorerView with ProjectService and PageRegistry
+        var projectExplorer = new ProjectExplorerView();
+      
+        Core.PageRegistry.RegisterProjectExplorer(projectExplorer);
+
     }
 
     protected override void OnDataContextChanged(EventArgs e)

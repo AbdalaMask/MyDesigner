@@ -9,7 +9,7 @@ using System.Xml.Linq;
 namespace MyDesigner.XamlDesigner.View;
 
 /// <summary>
-/// فئة لتحميل المراجع والمكتبات الخارجية من المشروع
+/// Class for loading external references and libraries from project
 /// </summary>
 public class ProjectReferencesLoader
 {
@@ -18,7 +18,7 @@ public class ProjectReferencesLoader
     private HashSet<string> _loadedAssemblies = new HashSet<string>(StringComparer.OrdinalIgnoreCase); // يحتوي على أسماء المكتبات المحملة في هذه الجلسة
 
     /// <summary>
-    /// تحميل جميع المراجع من المشروع
+    /// Load all references from project
     /// </summary>
     public void LoadAllReferences(string projectPath)
     {
@@ -69,7 +69,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// فحص ملفات XAML واستخراج namespaces المستخدمة
+    /// Scan XAML files and extract used namespaces
     /// </summary>
     private void ScanXamlFilesForNamespaces()
     {
@@ -139,7 +139,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل Controls من namespaces محددة
+    /// Load Controls from specified namespaces
     /// </summary>
     private void LoadControlsFromNamespaces(HashSet<string> namespaces, string projectName)
     {
@@ -286,7 +286,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل مراجع المشاريع (ProjectReference)
+    /// Load project references (ProjectReference)
     /// </summary>
     private void LoadProjectReferences(XDocument doc)
     {
@@ -366,7 +366,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل مراجع المشروع المرجعي
+    /// Load referenced project dependencies
     /// </summary>
     private void LoadReferencedProjectDependencies(string csprojPath)
     {
@@ -396,7 +396,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل مراجع الحزم (PackageReference)
+    /// Load package references (PackageReference)
     /// </summary>
     private void LoadPackageReferences(XDocument doc)
     {
@@ -432,7 +432,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل حزمة من NuGet
+    /// Load package from NuGet
     /// </summary>
     private void LoadPackageFromNuGet(string packageName, string version, string projectPath)
     {
@@ -476,7 +476,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// البحث عن مجلد packages
+    /// Search for packages folder
     /// </summary>
     private string FindPackagesFolder(string startPath)
     {
@@ -496,7 +496,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل DLLs من حزمة
+    /// Load DLLs from package
     /// </summary>
     private void LoadDllsFromPackage(string packageFolder)
     {
@@ -549,7 +549,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل المراجع المباشرة (Reference)
+    /// Load direct references (Reference)
     /// </summary>
     private void LoadDirectReferences(XDocument doc)
     {
@@ -596,7 +596,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل مخرجات المشروع نفسه
+    /// Load project output itself
     /// </summary>
     private void LoadProjectOutput()
     {
@@ -653,7 +653,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// تحميل Controls من Assembly الحالي (للمشاريع غير المبنية)
+    /// Load Controls from current Assembly (for unbuilt projects)
     /// </summary>
     private void LoadCurrentAssemblyControls(string projectName)
     {
@@ -769,7 +769,7 @@ public class ProjectReferencesLoader
 
 
     /// <summary>
-    /// تحميل Assembly إلى Toolbox
+    /// Load Assembly to Toolbox
     /// </summary>
     private void LoadAssembly(string dllPath)
     {
@@ -835,7 +835,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// التحقق من وجود UI Controls في المكتبة
+    /// Check if library has UI Controls
     /// </summary>
     private bool HasUIControls(string dllPath)
     {
@@ -868,7 +868,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// التحقق من كون المكتبة من مكتبات النظام
+    /// Check if library is a system library
     /// </summary>
     private bool IsSystemAssembly(string assemblyName)
     {
@@ -903,7 +903,7 @@ public class ProjectReferencesLoader
     }
 
     /// <summary>
-    /// مسح جميع المكتبات المحملة
+    /// Clear all loaded assemblies
     /// </summary>
     public void ClearLoadedAssemblies()
     {

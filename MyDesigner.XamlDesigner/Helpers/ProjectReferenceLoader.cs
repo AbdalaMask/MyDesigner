@@ -7,12 +7,12 @@ using System.Xml.Linq;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// Helper class لتحميل المراجع من ملفات المشاريع
+/// Helper class for loading references from project files
 /// </summary>
 public static class ProjectReferenceLoader
 {
     /// <summary>
-    /// تحميل جميع المراجع من ملف .csproj بشكل متداخل (recursive)
+    /// Load all references from .csproj file recursively
     /// </summary>
     public static List<string> LoadProjectReferences(string xamlFilePath)
     {
@@ -56,7 +56,7 @@ public static class ProjectReferenceLoader
     }
     
     /// <summary>
-    /// تحميل المراجع بشكل متداخل من ملف مشروع (public للاستخدام من SolutionReferenceLoader)
+    /// Load references recursively from project file (public for use from SolutionReferenceLoader)
     /// </summary>
     public static void LoadProjectReferencesRecursivePublic(string projectFile, List<string> references, HashSet<string> processedProjects)
     {
@@ -64,7 +64,7 @@ public static class ProjectReferenceLoader
     }
     
     /// <summary>
-    /// تحميل المراجع بشكل متداخل من ملف مشروع
+    /// Load references recursively from project file
     /// </summary>
     private static void LoadProjectReferencesRecursive(string projectFile, List<string> references, HashSet<string> processedProjects)
     {
@@ -122,7 +122,7 @@ public static class ProjectReferenceLoader
     }
     
     /// <summary>
-    /// البحث عن ملف .csproj في المجلد الحالي أو المجلدات الأعلى
+    /// Search for .csproj file in current folder or parent folders
     /// </summary>
     private static string FindProjectFile(string xamlFilePath)
     {
@@ -143,7 +143,7 @@ public static class ProjectReferenceLoader
     }
     
     /// <summary>
-    /// تحويل مسار ProjectReference إلى مسار DLL
+    /// Convert ProjectReference path to DLL path
     /// </summary>
     private static string ResolveProjectReferenceToDll(string projectRefPath, string projectDir)
     {

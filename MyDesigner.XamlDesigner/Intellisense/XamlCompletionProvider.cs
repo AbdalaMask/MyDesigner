@@ -17,7 +17,7 @@ using System.Text.RegularExpressions;
 namespace MyDesigner.XamlDesigner.Intellisense
 {
     /// <summary>
-    /// مزود IntelliSense للـ XAML
+    /// IntelliSense provider for XAML
     /// </summary>
     public class XamlCompletionProvider
     {
@@ -504,7 +504,7 @@ namespace MyDesigner.XamlDesigner.Intellisense
         }
 
         /// <summary>
-        /// أضف تجميع خارجي (مثل مكتبات HMI أو أي مكتبة تحوي كنترولات)
+        /// Add external assembly (like HMI libraries or any library containing controls)
         /// </summary>
         public void AddAssembly(Assembly assembly)
         {

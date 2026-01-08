@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace MyDesigner.Common.Controls;
 
 /// <summary>
-/// مزود IntelliSense بسيط وسريع
+/// Simple and fast IntelliSense provider
 /// </summary>
 public class SimpleIntelliSenseProvider
 {
@@ -17,7 +17,7 @@ public class SimpleIntelliSenseProvider
 
     static SimpleIntelliSenseProvider()
     {
-        // تحميل الأنواع الشائعة
+        // Load common types
         LoadCommonTypes();
     }
 

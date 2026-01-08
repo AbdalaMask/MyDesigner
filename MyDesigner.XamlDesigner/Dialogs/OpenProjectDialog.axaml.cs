@@ -17,19 +17,19 @@ public partial class OpenProjectDialog : UserControl
     private void BtnOpenProject_Click(object? sender, RoutedEventArgs e)
     {
         SelectedOption = "project";
-        DialogHost.Close("MainDialogHost", false);
+        DialogHost.Close("MainDialogHost", this);
     }
 
     private void BtnOpenFolder_Click(object? sender, RoutedEventArgs e)
     {
         SelectedOption = "folder";
-        DialogHost.Close("MainDialogHost", false);
+        DialogHost.Close("MainDialogHost", this);
     }
 
     private void BtnOpenFile_Click(object? sender, RoutedEventArgs e)
     {
         SelectedOption = "file";
-        DialogHost.Close("MainDialogHost", false);
+        DialogHost.Close("MainDialogHost", this);
     }
 
   

@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace MyDesigner.XamlDesigner.View;
 
 /// <summary>
-/// فئة لتحليل وتحميل بنية المشروع من ملف .csproj
+/// Class for parsing and loading project structure from .csproj file
 /// </summary>
 public class ProjectLoader
 {
@@ -18,7 +18,7 @@ public class ProjectLoader
     public ProjectStructure Structure { get; private set; }
 
     /// <summary>
-    /// تحميل المشروع من المسار المحدد
+    /// Load project from specified path
     /// </summary>
     public bool LoadProject(string projectPath)
     {
@@ -89,7 +89,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// تحديد نوع المشروع من محتوى .csproj
+    /// Determine project type from .csproj content
     /// </summary>
     private string DetermineProjectType(XDocument doc, string projectPath)
     {
@@ -150,7 +150,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// بناء بنية المشروع من ملف .csproj
+    /// Build project structure from .csproj file
     /// </summary>
     private ProjectStructure BuildProjectStructure(XDocument doc, string projectPath)
     {
@@ -276,7 +276,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// توسيع wildcards مثل "View\**\*.cs"
+    /// Expand wildcards like "View\**\*.cs"
     /// </summary>
     private List<string> ExpandWildcard(string pattern, string projectPath)
     {
@@ -310,7 +310,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// الحصول على جميع ملفات المشروع
+    /// Get all project files
     /// </summary>
     private HashSet<string> GetAllProjectFiles(string projectPath)
     {
@@ -379,7 +379,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// بناء بنية المجلدات
+    /// Build folder structure
     /// </summary>
     private void BuildFolderStructure(ProjectStructure structure, HashSet<string> files, string projectPath)
     {
@@ -510,7 +510,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// التأكد من وجود المجلد في القاموس
+    /// Ensure folder exists in dictionary
     /// </summary>
     private void EnsureFolderExists(Dictionary<string, ProjectFolder> folderDict, string path, string projectPath)
     {
@@ -547,7 +547,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// تحديد نوع الملف
+    /// Determine file type
     /// </summary>
     private ProjectFileType GetFileType(string fileName)
     {
@@ -566,7 +566,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// تحديد الملفات التي يجب تخطيها
+    /// Determine files to skip
     /// </summary>
     private bool ShouldSkipFile(string fileName)
     {
@@ -584,7 +584,7 @@ public class ProjectLoader
     }
 
     /// <summary>
-    /// تحميل المشروع من ملف .sln
+    /// Load project from .sln file
     /// </summary>
     private bool LoadFromSolutionFile(string slnPath, string projectPath)
     {
@@ -659,7 +659,7 @@ public class ProjectLoader
 }
 
 /// <summary>
-/// بنية المشروع
+/// Project structure
 /// </summary>
 public class ProjectStructure
 {
@@ -671,7 +671,7 @@ public class ProjectStructure
 }
 
 /// <summary>
-/// مجلد في المشروع
+/// Folder in project
 /// </summary>
 public class ProjectFolder
 {
@@ -682,7 +682,7 @@ public class ProjectFolder
 }
 
 /// <summary>
-/// ملف في المشروع
+/// File in project
 /// </summary>
 public class ProjectFile
 {
@@ -694,7 +694,7 @@ public class ProjectFile
 }
 
 /// <summary>
-/// أنواع الملفات
+/// File types
 /// </summary>
 public enum ProjectFileType
 {

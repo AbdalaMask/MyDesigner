@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 namespace MyDesigner.XamlDesigner;
 
 /// <summary>
-/// عنصر تحكم لعرض تقارير RDLC في Avalonia UI
-/// ملاحظة: هذا عارض مبسط لأن Avalonia لا تدعم ReportViewer مباشرة
+/// Control element for displaying RDLC reports in Avalonia UI
+/// Note: This is a simplified viewer as Avalonia does not support ReportViewer directly
 /// </summary>
 public partial class RdlcReportViewer : UserControl
 {

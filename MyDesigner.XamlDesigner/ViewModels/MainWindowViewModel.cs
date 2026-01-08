@@ -177,14 +177,14 @@ namespace MyDesigner.XamlDesigner.ViewModels
         private static async void NewProject()
         {
             try
-            { 
-              
+            {
+
                 var newProjectDialog = new NewProjectWindow();
                 var result = await dialogService.ShowDialogAsync(newProjectDialog);
 
                 //if (result == true)
                 //{
-                  
+
                 //    await dialogService.ShowMessageAsync("�� ����� ����� ���� �����!", "��� - Success");
                 //}
             }
@@ -202,24 +202,13 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 // ��� ����� ������ ��� ����� �������
                 var dialog = new OpenProjectDialog();
                 var result = await dialogService.ShowDialogAsync<OpenProjectDialog>(dialog);
-               
-                //if (result == true)
-                //{
-                //    var choice = result.SelectedOption;
 
-                //    switch (choice)
-                //    {
-                //        case "project":
-                //            await OpenProject();
-                //            break;
-                //        case "folder":
-                //            await OpenFolderDialog();
-                //            break;
-                //        case "file":
-                //            await OpenFile();
-                //            break;
-                //    }
-                //}
+                if (result != null)
+                {
+                    var choice = result.SelectedOption;
+
+                    HandleOpenChoice(choice);
+                }
             }
             catch (Exception ex)
             {
@@ -241,7 +230,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
 
         private void Documents_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_dockFactory == null) 
+            if (_dockFactory == null)
             {
                 System.Diagnostics.Debug.WriteLine("DockFactory is null in Documents_CollectionChanged");
                 return;
@@ -263,7 +252,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     _dockFactory.RemoveDocument(document);
                 }
             }
-            
+
             // Refresh command states after document changes
             RefreshCommandStates();
         }
@@ -276,7 +265,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             if (SaveAllCommand is RelayCommand saveAllCmd) saveAllCmd.NotifyCanExecuteChanged();
             if (CloseCommand is RelayCommand closeCmd) closeCmd.NotifyCanExecuteChanged();
             if (CloseAllCommand is RelayCommand closeAllCmd) closeAllCmd.NotifyCanExecuteChanged();
-            
+
             if (UndoCommand is RelayCommand undoCmd) undoCmd.NotifyCanExecuteChanged();
             if (RedoCommand is RelayCommand redoCmd) redoCmd.NotifyCanExecuteChanged();
             if (CutCommand is RelayCommand cutCmd) cutCmd.NotifyCanExecuteChanged();
@@ -286,13 +275,243 @@ namespace MyDesigner.XamlDesigner.ViewModels
             if (SelectAllCommand is RelayCommand selectAllCmd) selectAllCmd.NotifyCanExecuteChanged();
             if (FindCommand is RelayCommand findCmd) findCmd.NotifyCanExecuteChanged();
             if (RefreshCommand is RelayCommand refreshCmd) refreshCmd.NotifyCanExecuteChanged();
-            
+
             if (RunCommand is RelayCommand runCmd) runCmd.NotifyCanExecuteChanged();
             if (NewProjectCommand is RelayCommand renderCmd) renderCmd.NotifyCanExecuteChanged();
         }
 
+        #region Page Actions - دوال الصفحات
+
+        /// <summary>
+        /// إنشاء ملف جديد في المشروع
+        /// </summary>
+        [RelayCommand]
+        private void CreateNewFile()
+        {
+            Core.PageActions.CreateNewFile();
+        }
+
+        /// <summary>
+        /// إنشاء مجلد جديد في المشروع
+        /// </summary>
+        [RelayCommand]
+        private void CreateNewFolder()
+        {
+            Core.PageActions.CreateNewFolder();
+        }
+
+        /// <summary>
+        /// حذف العنصر المحدد
+        /// </summary>
+        [RelayCommand]
+        private void DeleteSelectedItem()
+        {
+            Core.PageActions.DeleteSelectedItem();
+        }
+
+        /// <summary>
+        /// إعادة تسمية العنصر المحدد
+        /// </summary>
+        [RelayCommand]
+        private void RenameSelectedItem()
+        {
+            Core.PageActions.RenameSelectedItem();
+        }
+
+        /// <summary>
+        /// بناء المشروع
+        /// </summary>
+        [RelayCommand]
+        private void BuildProjectFromMain()
+        {
+            Core.PageActions.BuildProject();
+        }
+
+        /// <summary>
+        /// تشغيل المشروع
+        /// </summary>
+        [RelayCommand]
+        private void RunProjectFromMain()
+        {
+            Core.PageActions.RunProject();
+        }
+
+        /// <summary>
+        /// فتح مشروع موجود
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenProjectFromMain()
+        {
+            await Core.PageActions.OpenProject();
+        }
+
+        /// <summary>
+        /// فتح مجلد مشروع
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenFolderFromMain()
+        {
+            await Core.PageActions.OpenFolderDialog();
+        }
+
+        /// <summary>
+        /// فتح ملف واحد
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenFileFromMain()
+        {
+            await Core.PageActions.OpenFile();
+        }
+
+        /// <summary>
+        /// معالج الخيارات المختلفة للفتح
+        /// </summary>
+        public async Task HandleOpenChoice(string choice)
+        {
+            try
+            {
+                switch (choice)
+                {
+                    case "project":
+                        await Core.PageActions.OpenProject();
+                        break;
+                    case "folder":
+                        await Core.PageActions.OpenFolderDialog();
+                        break;
+                    case "file":
+                        await Core.PageActions.OpenFile();
+                        break;
+                    default:
+                        Console.WriteLine($"خيار غير معروف: {choice}");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Shell.ReportException(ex);
+            }
+        }
+
+        /// <summary>
+        /// تحديث عرض المشروع
+        /// </summary>
+        [RelayCommand]
+        private void RefreshProjectView()
+        {
+            Core.PageActions.RefreshProjectView();
+        }
+
+        /// <summary>
+        /// تحميل ملفات المشروع
+        /// </summary>
+        [RelayCommand]
+        private void LoadProjectFiles(string projectPath)
+        {
+            Core.PageActions.LoadFilesToSolution(projectPath);
+        }
+
+        /// <summary>
+        /// إغلاق جميع المستندات
+        /// </summary>
+        [RelayCommand]
+        private void CloseAllDocuments()
+        {
+            Core.PageActions.CloseAllDocuments();
+        }
+
+        /// <summary>
+        /// تحديث شبكة الخصائص
+        /// </summary>
+        [RelayCommand]
+        private void RefreshPropertyGrid()
+        {
+            Core.PageActions.RefreshPropertyGrid();
+        }
+
+        /// <summary>
+        /// مسح شبكة الخصائص
+        /// </summary>
+        [RelayCommand]
+        private void ClearPropertyGrid()
+        {
+            Core.PageActions.ClearPropertyGrid();
+        }
+
+        /// <summary>
+        /// تحديث قائمة الأخطاء
+        /// </summary>
+        [RelayCommand]
+        private void RefreshErrorList()
+        {
+            Core.PageActions.RefreshErrorList();
+        }
+
+        /// <summary>
+        /// مسح قائمة الأخطاء
+        /// </summary>
+        [RelayCommand]
+        private void ClearErrorList()
+        {
+            Core.PageActions.ClearErrorList();
+        }
+
+        /// <summary>
+        /// تحديث صندوق الأدوات
+        /// </summary>
+        [RelayCommand]
+        private void RefreshToolbox()
+        {
+            Core.PageActions.RefreshToolbox();
+        }
+
+        /// <summary>
+        /// إضافة تجميعة إلى صندوق الأدوات
+        /// </summary>
+        [RelayCommand]
+        private void AddAssemblyToToolbox(string assemblyPath)
+        {
+            Core.PageActions.AddAssemblyToToolbox(assemblyPath);
+        }
+
+        /// <summary>
+        /// تحديث المخطط التفصيلي
+        /// </summary>
+        [RelayCommand]
+        private void RefreshOutline()
+        {
+            Core.PageActions.RefreshOutline();
+        }
+
+        /// <summary>
+        /// توسيع جميع عقد المخطط
+        /// </summary>
+        [RelayCommand]
+        private void ExpandAllOutlineNodes()
+        {
+            Core.PageActions.ExpandAllOutlineNodes();
+        }
+
+        /// <summary>
+        /// طي جميع عقد المخطط
+        /// </summary>
+        [RelayCommand]
+        private void CollapseAllOutlineNodes()
+        {
+            Core.PageActions.CollapseAllOutlineNodes();
+        }
+
+        /// <summary>
+        /// تحديث المستند الحالي
+        /// </summary>
+        [RelayCommand]
+        private void RefreshCurrentDocument()
+        {
+            Core.PageActions.RefreshCurrentDocument();
+        }
+
+        #endregion
 
 
-        
+
     }
 }

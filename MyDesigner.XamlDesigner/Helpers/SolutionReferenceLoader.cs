@@ -6,12 +6,12 @@ using System.Text.RegularExpressions;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// Helper class لتحميل جميع المراجع من ملف Solution
+/// Helper class for loading all references from Solution file
 /// </summary>
 public static class SolutionReferenceLoader
 {
     /// <summary>
-    /// تحميل جميع المراجع من ملف .sln
+    /// Load all references from .sln file
     /// </summary>
     public static List<string> LoadSolutionReferences(string solutionPath)
     {
@@ -74,7 +74,7 @@ public static class SolutionReferenceLoader
     }
     
     /// <summary>
-    /// البحث عن ملف .sln في مجلد معين
+    /// Search for .sln file in specific folder
     /// </summary>
     public static string FindSolutionFile(string directory)
     {

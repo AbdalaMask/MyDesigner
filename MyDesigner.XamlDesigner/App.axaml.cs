@@ -14,6 +14,7 @@ namespace MyDesigner.XamlDesigner
 {
     public partial class App : Application
     {
+        public static ProjectExplorerViewViewModel ExplorerVM { get; } = new();
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);

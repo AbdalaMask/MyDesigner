@@ -6,12 +6,12 @@ using System.IO;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// مساعد لإضافة الأيقونات المتجهية إلى عناصر TreeView في Avalonia
+/// Helper for adding vector icons to TreeView elements in Avalonia
 /// </summary>
 public static class TreeViewIconHelper
 {
     /// <summary>
-    /// إنشاء TreeViewItem مع أيقونة متجهية
+    /// Create TreeViewItem with vector icon
     /// </summary>
     public static TreeViewItem CreateTreeViewItem(string name, IImage icon, string fullPath, FileItemType itemType)
     {
@@ -30,7 +30,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem للمشروع
+    /// Create TreeViewItem for project
     /// </summary>
     public static TreeViewItem CreateProjectItem(string projectName, string projectPath, string projectType)
     {
@@ -43,7 +43,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem للمجلد
+    /// Create TreeViewItem for folder
     /// </summary>
     public static TreeViewItem CreateFolderItem(string folderName, string folderPath, bool isExpanded = false)
     {
@@ -52,7 +52,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem للملف
+    /// Create TreeViewItem for file
     /// </summary>
     public static TreeViewItem CreateFileItem(string fileName, string filePath)
     {
@@ -62,7 +62,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Dependencies
+    /// Create TreeViewItem for Dependencies
     /// </summary>
     public static TreeViewItem CreateDependenciesItem(string projectPath)
     {
@@ -75,7 +75,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Packages
+    /// Create TreeViewItem for Packages
     /// </summary>
     public static TreeViewItem CreatePackagesItem(string projectPath)
     {
@@ -88,7 +88,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Assemblies
+    /// Create TreeViewItem for Assemblies
     /// </summary>
     public static TreeViewItem CreateAssembliesItem(string projectPath)
     {
@@ -101,7 +101,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Frameworks
+    /// Create TreeViewItem for Frameworks
     /// </summary>
     public static TreeViewItem CreateFrameworksItem(string projectPath)
     {
@@ -114,7 +114,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Analyzers
+    /// Create TreeViewItem for Analyzers
     /// </summary>
     public static TreeViewItem CreateAnalyzersItem(string projectPath)
     {
@@ -127,7 +127,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Projects (مشاريع مرجعية)
+    /// Create TreeViewItem for Projects (referenced projects)
     /// </summary>
     public static TreeViewItem CreateProjectsItem(string projectPath)
     {
@@ -140,7 +140,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لحزمة NuGet
+    /// Create TreeViewItem for NuGet package
     /// </summary>
     public static TreeViewItem CreatePackageItem(string packageName, string version, string projectPath)
     {
@@ -154,7 +154,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لتجميع (Assembly)
+    /// Create TreeViewItem for Assembly
     /// </summary>
     public static TreeViewItem CreateAssemblyItem(string assemblyName, string projectPath)
     {
@@ -167,7 +167,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem لـ Framework
+    /// Create TreeViewItem for Framework
     /// </summary>
     public static TreeViewItem CreateFrameworkItem(string frameworkName, string projectPath)
     {
@@ -180,7 +180,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem مع محتوى مخصص
+    /// Create TreeViewItem with custom content
     /// </summary>
     public static TreeViewItem CreateCustomTreeViewItem(object header, string fullPath, FileItemType itemType)
     {
@@ -199,7 +199,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إضافة أيقونة إلى TreeViewItem موجود
+    /// Add icon to existing TreeViewItem
     /// </summary>
     public static void AddIconToTreeViewItem(TreeViewItem item, IImage icon)
     {
@@ -222,7 +222,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// الحصول على FileItem من TreeViewItem
+    /// Get FileItem from TreeViewItem
     /// </summary>
     public static FileItem GetFileItem(TreeViewItem item)
     {
@@ -242,7 +242,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// تحديد نوع FileItemType بناءً على اسم الملف
+    /// Determine FileItemType based on file name
     /// </summary>
     private static FileItemType GetFileItemType(string fileName)
     {
@@ -261,7 +261,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// تحديث أيقونة TreeViewItem بناءً على حالة التوسع
+    /// Update TreeViewItem icon based on expansion state
     /// </summary>
     public static void UpdateFolderIcon(TreeViewItem item, bool isExpanded)
     {
@@ -273,7 +273,7 @@ public static class TreeViewIconHelper
     }
 
     /// <summary>
-    /// إنشاء TreeViewItem للحلول (Solutions)
+    /// Create TreeViewItem for Solutions
     /// </summary>
     public static TreeViewItem CreateSolutionItem(string solutionName, string solutionPath)
     {

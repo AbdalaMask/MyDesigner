@@ -228,7 +228,7 @@ public static class EnhancedDragDropHelper
         }
     }
     
-    //// إضافة معالج للإسقاط المحسن
+    //// Add enhanced drop handler
     //public static void AddEnhancedDropHandler(Control element, EventHandler<EnhancedDropEventArgs> handler)
     //{
     //    // يمكن تنفيذ نظام أحداث مخصص هنا

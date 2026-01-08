@@ -55,7 +55,6 @@
 
   <ItemGroup>
     <Compile Remove="HelloWorld.cs" />
-    <Compile Remove="Services\ProjectService.cs" />
   </ItemGroup>
 
 	<!-- Assets and Templates -->
@@ -79,5 +78,9 @@
     <Compile Update="Views\ToolboxView.axaml.cs">
       <DependentUpon>FromToolbox.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
   </ItemGroup>
 </Project>

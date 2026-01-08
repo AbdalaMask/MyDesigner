@@ -8,7 +8,7 @@ using System;
 namespace MyDesigner.XamlDesigner.Intellisense;
 
 /// <summary>
-/// بيانات الإكمال التلقائي لـ XAML
+/// Auto-completion data for XAML
 /// </summary>
 public class XamlCompletionData : ICompletionData
 {

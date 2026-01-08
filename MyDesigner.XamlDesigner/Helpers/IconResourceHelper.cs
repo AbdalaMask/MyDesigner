@@ -11,8 +11,8 @@ using System.Globalization;
 namespace MyDesigner.XamlDesigner.Helpers;
 
 /// <summary>
-/// مساعد للحصول على الأيقونات المتجهية من ملف الموارد
-/// تحميل آمن وكسول للأيقونات لتجنب تجميد البرنامج
+/// Helper for getting vector icons from resource file
+/// Safe and lazy loading of icons to avoid program freezing
 /// </summary>
 public static class IconResourceHelper
 {
@@ -20,7 +20,7 @@ public static class IconResourceHelper
     private static readonly object _lock = new object();
 
     /// <summary>
-    /// الحصول على أيقونة من الموارد بشكل آمن
+    /// Get icon from resources safely
     /// </summary>
     public static IImage? GetIcon(string iconKey)
     {
@@ -94,7 +94,7 @@ public static class IconResourceHelper
     public static IImage? PropertiesIcon => GetIcon("PropertiesIcon");
 
     /// <summary>
-    /// الحصول على أيقونة بناءً على نوع الملف
+    /// Get icon based on file type
     /// </summary>
     public static IImage? GetIconForFileType(string extension)
     {
@@ -113,7 +113,7 @@ public static class IconResourceHelper
     }
 
     /// <summary>
-    /// الحصول على أيقونة بناءً على نوع العنصر في شجرة المشروع
+    /// Get icon based on element type in project tree
     /// </summary>
     public static IImage? GetIconForNodeType(string nodeType)
     {

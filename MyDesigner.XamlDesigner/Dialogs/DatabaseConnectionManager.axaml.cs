@@ -22,7 +22,7 @@ public partial class DatabaseConnectionManager : UserControl
         UpdateConnectionsList();
     }
     /// <summary>
-    /// تحميل الاتصالات المحفوظة
+    /// Load saved connections
     /// </summary>
     private void LoadConnections()
     {
@@ -41,7 +41,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// حفظ الاتصالات
+    /// Save connections
     /// </summary>
     private void SaveConnections()
     {
@@ -57,7 +57,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// تحديث قائمة الاتصالات
+    /// Update connections list
     /// </summary>
     private void UpdateConnectionsList()
     {
@@ -73,7 +73,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// تغيير نوع قاعدة البيانات
+    /// Change database type
     /// </summary>
     private void DatabaseType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -86,7 +86,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// تحديث الحقول بناءً على نوع قاعدة البيانات
+    /// Update fields based on database type
     /// </summary>
     private void UpdateFieldsForDatabaseType(string? dbType)
     {
@@ -166,7 +166,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// بناء نص الاتصال
+    /// Build connection string
     /// </summary>
     private void BuildConnectionString_Click(object? sender, RoutedEventArgs e)
     {
@@ -191,7 +191,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// بناء نص الاتصال بناءً على النوع
+    /// Build connection string based on type
     /// </summary>
     private string BuildConnectionString(string? dbType)
     {
@@ -221,7 +221,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// اختبار الاتصال
+    /// Test connection
     /// </summary>
     private void TestConnection_Click(object? sender, RoutedEventArgs e)
     {
@@ -253,7 +253,7 @@ public partial class DatabaseConnectionManager : UserControl
     }
 
     /// <summary>
-    /// اختبار الاتصال بقاعدة البيانات
+    /// Test database connection
     /// </summary>
     private bool TestDatabaseConnection(string? dbType, string connectionString)
     {

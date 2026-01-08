@@ -1,279 +1,133 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using System.Text.Json;
+using Avalonia.Platform.Storage;
+using System.IO;
+using MyDesigner.XamlDesigner.Views;
 
-namespace MyDesigner.XamlDesigner.Services;
-
-/// <summary>
-/// خدمة إدارة المشاريع
-/// </summary>
-public class ProjectService
+namespace MyDesigner.XamlDesigner.Services
 {
-    private readonly List<Document> _openDocuments = new();
-    private Document? _activeDocument;
-
-    public event EventHandler<Document>? DocumentOpened;
-    public event EventHandler<Document>? DocumentClosed;
-    public event EventHandler<Document>? ActiveDocumentChanged;
-
-    /// <summary>
-    /// المستندات المفتوحة
-    /// </summary>
-    public IReadOnlyList<Document> OpenDocuments => _openDocuments.AsReadOnly();
-
-    /// <summary>
-    /// المستند النشط
-    /// </summary>
-    public Document? ActiveDocument
+    public class ProjectService
     {
-        get => _activeDocument;
-        set
+        private static ProjectService? _instance;
+        public static ProjectService Instance => _instance ??= new ProjectService();
+
+        // Event للإشعار بتحميل مشروع جديد
+        public event Action<string>? ProjectLoaded;
+        public event Action<string>? ProjectOpened;
+        public event Action? ProjectClosed;
+        
+        // Reference إلى ProjectExplorerView الحالي
+        private ProjectExplorerView? _projectExplorerView;
+
+        public void RegisterProjectExplorer(ProjectExplorerView projectExplorer)
         {
-            if (_activeDocument != value)
+            _projectExplorerView = projectExplorer;
+        }
+
+        public async Task<bool> OpenProjectAsync(IStorageProvider storageProvider)
+        {
+            try
             {
-                _activeDocument = value;
-                ActiveDocumentChanged?.Invoke(this, value!);
-            }
-        }
-    }
-
-    /// <summary>
-    /// فتح مستند جديد
-    /// </summary>
-    public async Task<Document?> OpenDocumentAsync(string filePath)
-    {
-        try
-        {
-            // التحقق من أن الملف موجود
-            if (!File.Exists(filePath))
-                return null;
-
-            // التحقق من أن المستند غير مفتوح بالفعل
-            var existingDoc = _openDocuments.Find(d => 
-                string.Equals(d.FilePath, filePath, StringComparison.OrdinalIgnoreCase));
-            
-            if (existingDoc != null)
-            {
-                ActiveDocument = existingDoc;
-                return existingDoc;
-            }
-
-            // قراءة محتوى الملف
-            var content = await File.ReadAllTextAsync(filePath);
-            
-            // إنشاء مستند جديد
-            var document = new Document
-            {
-                FilePath = filePath,
-                FileName = Path.GetFileName(filePath),
-                Content = content,
-                IsModified = false
-            };
-
-            // إضافة المستند إلى القائمة
-            _openDocuments.Add(document);
-            ActiveDocument = document;
-
-            // إثارة الحدث
-            DocumentOpened?.Invoke(this, document);
-
-            return document;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error opening document: {ex.Message}");
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// إنشاء مستند جديد
-    /// </summary>
-    public Document CreateNewDocument(string fileName = "Untitled.axaml")
-    {
-        var document = new Document
-        {
-            FileName = fileName,
-            Content = GetDefaultContent(fileName),
-            IsModified = false,
-            IsNew = true
-        };
-
-        _openDocuments.Add(document);
-        ActiveDocument = document;
-
-        DocumentOpened?.Invoke(this, document);
-        return document;
-    }
-
-    /// <summary>
-    /// حفظ مستند
-    /// </summary>
-    public async Task<bool> SaveDocumentAsync(Document document, string? filePath = null)
-    {
-        try
-        {
-            var targetPath = filePath ?? document.FilePath;
-            
-            if (string.IsNullOrEmpty(targetPath))
-                return false;
-
-            await File.WriteAllTextAsync(targetPath, document.Content);
-            
-            document.FilePath = targetPath;
-            document.FileName = Path.GetFileName(targetPath);
-            document.IsModified = false;
-            document.IsNew = false;
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error saving document: {ex.Message}");
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// إغلاق مستند
-    /// </summary>
-    public bool CloseDocument(Document document)
-    {
-        try
-        {
-            if (!_openDocuments.Contains(document))
-                return false;
-
-            // التحقق من التغييرات غير المحفوظة
-            if (document.IsModified)
-            {
-                // يمكن إضافة حوار تأكيد هنا
-                // في الوقت الحالي، سنغلق المستند مباشرة
-            }
-
-            _openDocuments.Remove(document);
-
-            // تحديد مستند نشط جديد
-            if (ActiveDocument == document)
-            {
-                ActiveDocument = _openDocuments.Count > 0 ? _openDocuments[^1] : null;
-            }
-
-            DocumentClosed?.Invoke(this, document);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error closing document: {ex.Message}");
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// إغلاق جميع المستندات
-    /// </summary>
-    public async Task<bool> CloseAllDocumentsAsync()
-    {
-        try
-        {
-            var documentsToClose = new List<Document>(_openDocuments);
-            
-            foreach (var document in documentsToClose)
-            {
-                if (document.IsModified)
+                if (_projectExplorerView == null)
                 {
-                    // يمكن إضافة حوار تأكيد هنا
-                    var saved = await SaveDocumentAsync(document);
-                    if (!saved)
-                    {
-                        // المستخدم ألغى العملية
-                        return false;
-                    }
+                    throw new InvalidOperationException("ProjectExplorerView is not registered");
+                }
+
+                // استخدام دالة OpenFolder الموجودة في ProjectExplorerView
+                _projectExplorerView.OpenFolder();
+                
+                // إشعار بفتح المشروع
+                var currentPath = Configuration.Settings.Default.ProjectPath;
+                if (!string.IsNullOrEmpty(currentPath))
+                {
+                    ProjectOpened?.Invoke(currentPath);
                 }
                 
-                CloseDocument(document);
+                return true;
             }
-
-            return true;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"خطأ في فتح المشروع: {ex.Message}");
+                return false;
+            }
         }
-        catch (Exception ex)
+
+        public void LoadProject(string projectPath)
         {
-            System.Diagnostics.Debug.WriteLine($"Error closing all documents: {ex.Message}");
-            return false;
-        }
-    }
+            try
+            {
+                if (_projectExplorerView == null)
+                {
+                    throw new InvalidOperationException("ProjectExplorerView is not registered");
+                }
 
-    /// <summary>
-    /// الحصول على المحتوى الافتراضي للملف
-    /// </summary>
-    private string GetDefaultContent(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLower();
+                if (!Directory.Exists(projectPath))
+                {
+                    throw new DirectoryNotFoundException($"مسار المشروع غير موجود: {projectPath}");
+                }
+
+                // استخدام دالة LoadFilesToSolution الموجودة
+              //  _projectExplorerView.LoadFilesToSolution(projectPath);
+                
+                // إشعار المكونات الأخرى بتحميل المشروع
+                ProjectLoaded?.Invoke(projectPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"خطأ في تحميل المشروع: {ex.Message}");
+                throw; // إعادة رمي الاستثناء للتعامل معه في الطبقة العليا
+            }
+        }
+
+        public void RefreshProject()
+        {
+            try
+            {
+                if (_projectExplorerView == null) return;
+
+                // إعادة تحميل المشروع الحالي
+                var currentPath = Configuration.Settings.Default.ProjectPath;
+                if (!string.IsNullOrEmpty(currentPath))
+                {
+                    LoadProject(currentPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"خطأ في تحديث المشروع: {ex.Message}");
+                throw;
+            }
+        }
+
+        public void CloseProject()
+        {
+            try
+            {
+                if (_projectExplorerView == null) return;
+
+                // إغلاق جميع المستندات
+                _projectExplorerView.CloseAllDocuments();
+                
+                // مسح إعدادات المشروع
+                Configuration.Settings.Default.ProjectPath = string.Empty;
+                Configuration.Settings.Default.ProjectName = string.Empty;
+                Configuration.Settings.Default.Save();
+                
+                // إشعار بإغلاق المشروع
+                ProjectClosed?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"خطأ في إغلاق المشروع: {ex.Message}");
+            }
+        }
+
+        public bool IsProjectLoaded => !string.IsNullOrEmpty(Configuration.Settings.Default.ProjectPath);
         
-        return extension switch
-        {
-            ".axaml" => GetDefaultAxamlContent(),
-            ".cs" => GetDefaultCSharpContent(),
-            ".json" => "{\n  \n}",
-            ".xml" => "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<root>\n</root>",
-            _ => string.Empty
-        };
-    }
+        public string? CurrentProjectPath => Configuration.Settings.Default.ProjectPath;
+        
+        public string? CurrentProjectName => Configuration.Settings.Default.ProjectName;
 
-    /// <summary>
-    /// المحتوى الافتراضي لملف AXAML
-    /// </summary>
-    private string GetDefaultAxamlContent()
-    {
-        return @"<UserControl xmlns=""https://github.com/avaloniaui""
-             xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
-             xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""
-             xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
-             mc:Ignorable=""d"" d:DesignWidth=""800"" d:DesignHeight=""450""
-             x:Class=""MyNamespace.MyUserControl"">
-    
-    <Grid>
-        <!-- Add your content here -->
-    </Grid>
-    
-</UserControl>";
-    }
-
-    /// <summary>
-    /// المحتوى الافتراضي لملف C#
-    /// </summary>
-    private string GetDefaultCSharpContent()
-    {
-        return @"using System;
-using Avalonia.Controls;
-
-namespace MyNamespace;
-
-public partial class MyClass : UserControl
-{
-    public MyClass()
-    {
-        InitializeComponent();
-    }
-}";
-    }
-
-    /// <summary>
-    /// البحث عن مستند بالمسار
-    /// </summary>
-    public Document? FindDocumentByPath(string filePath)
-    {
-        return _openDocuments.Find(d => 
-            string.Equals(d.FilePath, filePath, StringComparison.OrdinalIgnoreCase));
-    }
-
-    /// <summary>
-    /// الحصول على المستندات المعدلة
-    /// </summary>
-    public List<Document> GetModifiedDocuments()
-    {
-        return _openDocuments.FindAll(d => d.IsModified);
+        public bool CanExecuteProjectCommands => IsProjectLoaded && _projectExplorerView != null;
     }
 }
