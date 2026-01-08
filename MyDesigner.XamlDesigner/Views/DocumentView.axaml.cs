@@ -23,7 +23,6 @@ namespace MyDesigner.XamlDesigner.Views
         public DocumentViewModel ViewModel { get; private set; }
         private AvaloniaEdit.TextEditor? _textEditor;
         private ContentPresenter? _designSurface;
-        CSharpEditor.Editor Editor;
         public DocumentView()
         {
             InitializeComponent();
@@ -61,17 +60,11 @@ namespace MyDesigner.XamlDesigner.Views
         {
             if (Document == null) return;
 
-            // تحديد نوع الملف وتفعيل الوضع المناسب
+            // هذا المحرر مخصص فقط لملفات XAML
+            // ملفات C# ستستخدم CodeEditorView منفصل
             if (!string.IsNullOrEmpty(Document.FilePath))
             {
-                if (Document.FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
-                {
-                    // تفعيل وضع الكود لملفات C#
-                    Document.Mode = DocumentMode.Code;
-                    await SetupCodeEditor();
-                    return;
-                }
-                else if (Document.FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) ||
+                if (Document.FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) ||
                          Document.FilePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                 {
                     // تفعيل وضع التصميم لملفات XAML
@@ -80,65 +73,6 @@ namespace MyDesigner.XamlDesigner.Views
             }
 
             await SetupXamlEditor();
-        }
-
-        private async Task SetupCodeEditor()
-        {
-            // قراءة محتوى ملف C#
-            string sourceText = "";
-            if (!string.IsNullOrEmpty(Document.FilePath) && File.Exists(Document.FilePath))
-            {
-                sourceText = await File.ReadAllTextAsync(Document.FilePath);
-                // تحديث نص المستند
-                Document.Text = sourceText;
-            }
-            else
-            {
-                // استخدام الملف الافتراضي إذا لم يكن هناك ملف
-                using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("MyDesigner.XamlDesigner.HelloWorld.cs"))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    sourceText = reader.ReadToEnd();
-                    Document.Text = sourceText;
-                }
-            }
-
-            // إعداد المراجع الأساسية
-            string systemRuntime = Path.Combine(Path.GetDirectoryName(typeof(object).Assembly.Location), "System.Runtime.dll");
-            CSharpEditor.CachedMetadataReference[] minimalReferences = new CSharpEditor.CachedMetadataReference[]
-            {
-                CSharpEditor.CachedMetadataReference.CreateFromFile(systemRuntime),
-                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(System.Console).Assembly.Location)
-            };
-
-            Editor = await CSharpEditor.Editor.Create(sourceText, references: minimalReferences, compilationOptions: new CSharpCompilationOptions(OutputKind.ConsoleApplication));
-
-            Grid.SetRow(Editor, 1);
-            this.FindControl<Grid>("MainGrid").Children.Add(Editor);
-
-            // إعداد زر التشغيل
-            this.FindControl<Button>("RunButton").Click += async (s, e) =>
-            {
-                Assembly assembly = (await Editor.Compile(Editor.SynchronousBreak, Editor.AsynchronousBreak)).Assembly;
-
-                if (assembly != null)
-                {
-                    new Thread(() =>
-                    {
-                        assembly.EntryPoint.Invoke(null, new object[assembly.EntryPoint.GetParameters().Length]);
-                    }).Start();
-                }
-            };
-
-            // ربط تغييرات النص مع المستند
-            Editor.TextChanged += (s, e) =>
-            {
-                if (Document != null)
-                {
-                    Document.Text = Editor.Text;
-                }
-            };
         }
 
         private async Task SetupXamlEditor()
@@ -180,16 +114,10 @@ namespace MyDesigner.XamlDesigner.Views
         {
             if (Document == null) return;
 
-            // معالجة تغييرات النص لمحرر XAML
+            // معالجة تغييرات النص لمحرر XAML فقط
             if (_textEditor != null && e.PropertyName == "Text" && Document.Text != _textEditor.Text)
             {
                 _textEditor.Text = Document.Text ?? string.Empty;
-            }
-
-            // معالجة تغييرات النص لمحرر C#
-            if (Editor != null && e.PropertyName == "Text" && Document.Text != Editor.Text)
-            {
-              //  Editor.Text = Document.Text ?? string.Empty;
             }
 
             if (e.PropertyName == "XamlElementLineInfo")

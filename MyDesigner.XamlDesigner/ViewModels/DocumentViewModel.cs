@@ -43,7 +43,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             XamlText = document.Text;
             InDesignMode = document.InDesignMode;
             InXamlMode = document.InXamlMode;
-            inCodeMode= document.InCodeMode;
+          
             Title = document.Title;
             IsDirty = document.IsDirty;
             designSurface=document.DesignSurface;
@@ -53,8 +53,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 Mode = DocumentMode.Design;
             else if (document.InXamlMode)
                 Mode = DocumentMode.Xaml;
-            else
-                Mode = DocumentMode.Code;
+          
             
             // Sync with document's Mode property
             document.Mode = Mode;
@@ -134,15 +133,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                         InCodeMode = false;
                     }
                     break;
-                case DocumentMode.Code:
-                    if (!InCodeMode)
-                    {
-                        
-                        InDesignMode = false;
-                        InXamlMode = false;
-                        InCodeMode = true;
-                    }
-                    break;
+               
             }
         }
 
@@ -169,14 +160,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                 Mode = DocumentMode.Xaml;
             }
         }
-
-        partial void OnInCodeModeChanged(bool value)
-        {
-            if (value && Mode != DocumentMode.Code)
-            {
-                Mode = DocumentMode.Code;
-            }
-        }
+ 
 
         private void SwitchToDesignMode()
         {

@@ -1,0 +1,37 @@
+<UserControl
+    mc:Ignorable="d"
+    x:Class="MyDesigner.XamlDesigner.Views.CodeEditorView"
+    x:DataType="vm:DocumentViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:csharpEditor="clr-namespace:CSharpEditor;assembly=CSharpEditor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:MyDesigner.XamlDesigner.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <!-- شريط الأدوات -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" Spacing="10">
+            <Button Name="RunButton" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Image Source="avares://MyDesigner.XamlDesigner/Assets/Play_16x16.png" Width="16" Height="16" />
+                    <TextBlock Text="Compile and Run" />
+                </StackPanel>
+            </Button>
+            
+            <Button Name="SaveButton" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Image Source="avares://MyDesigner.XamlDesigner/Assets/Save_16x16.png" Width="16" Height="16" />
+                    <TextBlock Text="Save" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+    
+    </Grid>
+</UserControl>

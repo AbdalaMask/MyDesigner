@@ -10,7 +10,6 @@ using MyDesigner.Designer.ThumbnailView;
 using MyDesigner.XamlDesigner.ViewModels.Tools;
 using MyDesigner.XamlDesigner.Views;
 using System.ComponentModel;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,14 +162,107 @@ namespace MyDesigner.XamlDesigner.ViewModels
         {
             if (_documentDock != null)
             {
-                var documentViewModel = new DocumentDock(document);
+                // التحقق من وجود المستند مسبقاً
+                IDockable existingDocument = null;
+                
+                // البحث في DocumentDock
+                existingDocument = _documentDock.VisibleDockables
+                    .OfType<DocumentDock>()
+                    .FirstOrDefault(d => d.Document == document || 
+                                       (!string.IsNullOrEmpty(d.Document.FilePath) && 
+                                        !string.IsNullOrEmpty(document.FilePath) && 
+                                        d.Document.FilePath.Equals(document.FilePath, StringComparison.OrdinalIgnoreCase)));
+                
+                // البحث في CodeEditorDock إذا لم نجد في DocumentDock
+                if (existingDocument == null)
+                {
+                    existingDocument = _documentDock.VisibleDockables
+                        .OfType<CodeEditorDock>()
+                        .FirstOrDefault(d => d.Document == document || 
+                                           (!string.IsNullOrEmpty(d.Document.FilePath) && 
+                                            !string.IsNullOrEmpty(document.FilePath) && 
+                                            d.Document.FilePath.Equals(document.FilePath, StringComparison.OrdinalIgnoreCase)));
+                }
+                
+                // إذا وُجد المستند، فقط ركز عليه
+                if (existingDocument != null)
+                {
+                    _documentDock.ActiveDockable = existingDocument;
+                    System.Diagnostics.Debug.WriteLine($"[DockFactory.AddDocument] Document already exists, activating: {document.FilePath}");
+                    return;
+                }
+                
+                // إنشاء تبويب جديد إذا لم يوجد المستند
+                IDockable documentViewModel;
+                
+                // تحديد نوع المحرر بناءً على نوع الملف
+                if (!string.IsNullOrEmpty(document.FilePath) && 
+                    document.FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
+                {
+                    // إنشاء محرر كود منفصل لملفات C#
+                    documentViewModel = new CodeEditorDock(document);
+                    
+                    // تحديث ContextLocator لاستخدام CodeEditorView
+                    if (ContextLocator != null)
+                    {
+                        ContextLocator[documentViewModel.Id] = () => new Views.CodeEditorView { DataContext = documentViewModel };
+                    }
+                    
+                    System.Diagnostics.Debug.WriteLine($"[DockFactory.AddDocument] Created new CodeEditorDock for: {document.FilePath}");
+                }
+                else
+                {
+                    // استخدام DocumentView العادي لملفات XAML
+                    documentViewModel = new DocumentDock(document);
+                    
+                    // تحديث ContextLocator لاستخدام DocumentView
+                    if (ContextLocator != null)
+                    {
+                        ContextLocator[documentViewModel.Id] = () => new Views.DocumentView { DataContext = documentViewModel };
+                    }
+                    
+                    System.Diagnostics.Debug.WriteLine($"[DockFactory.AddDocument] Created new DocumentDock for: {document.FilePath}");
+                }
+                
                 _documentDock.VisibleDockables.Add(documentViewModel);
                 _documentDock.ActiveDockable = documentViewModel;
+            }
+        }
+
+        public void SetActiveDocument(Document document)
+        {
+            if (_documentDock != null && document != null)
+            {
+                IDockable existingDocument = null;
                 
-                // Update the factory to handle the new document
-                if (ContextLocator != null)
+                // البحث عن DocumentDock
+                existingDocument = _documentDock.VisibleDockables
+                    .OfType<DocumentDock>()
+                    .FirstOrDefault(d => d.Document == document || 
+                                       (!string.IsNullOrEmpty(d.Document.FilePath) && 
+                                        !string.IsNullOrEmpty(document.FilePath) && 
+                                        d.Document.FilePath.Equals(document.FilePath, StringComparison.OrdinalIgnoreCase)));
+                
+                // البحث عن CodeEditorDock إذا لم نجد في DocumentDock
+                if (existingDocument == null)
                 {
-                    ContextLocator[documentViewModel.Id] = () => new Views.DocumentView { DataContext = documentViewModel };
+                    existingDocument = _documentDock.VisibleDockables
+                        .OfType<CodeEditorDock>()
+                        .FirstOrDefault(d => d.Document == document || 
+                                           (!string.IsNullOrEmpty(d.Document.FilePath) && 
+                                            !string.IsNullOrEmpty(document.FilePath) && 
+                                            d.Document.FilePath.Equals(document.FilePath, StringComparison.OrdinalIgnoreCase)));
+                }
+                
+                // تفعيل التبويب إذا وُجد
+                if (existingDocument != null)
+                {
+                    _documentDock.ActiveDockable = existingDocument;
+                    System.Diagnostics.Debug.WriteLine($"[DockFactory.SetActiveDocument] Activated tab for: {document.FilePath}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"[DockFactory.SetActiveDocument] No tab found for: {document.FilePath}");
                 }
             }
         }
@@ -179,10 +271,30 @@ namespace MyDesigner.XamlDesigner.ViewModels
         {
             if (_documentDock != null)
             {
+                // البحث عن DocumentDock
                 var docToRemove = _documentDock.VisibleDockables
                     .OfType<DocumentDock>()
                     .FirstOrDefault(d => d.Document == document);
-                if (docToRemove != null)
+                
+                // البحث عن CodeEditorDock إذا لم نجد DocumentDock
+                if (docToRemove == null)
+                {
+                    var codeEditorToRemove = _documentDock.VisibleDockables
+                        .OfType<CodeEditorDock>()
+                        .FirstOrDefault(d => d.Document == document);
+                    
+                    if (codeEditorToRemove != null)
+                    {
+                        _documentDock.VisibleDockables.Remove(codeEditorToRemove);
+                        
+                        // Remove from ContextLocator
+                        if (ContextLocator != null && ContextLocator.ContainsKey(codeEditorToRemove.Id))
+                        {
+                            ContextLocator.Remove(codeEditorToRemove.Id);
+                        }
+                    }
+                }
+                else
                 {
                     _documentDock.VisibleDockables.Remove(docToRemove);
                     
@@ -209,6 +321,21 @@ namespace MyDesigner.XamlDesigner.ViewModels
             
             // Set the Document as the context for the DocumentView
             Context = document;
+        }
+
+        public override bool OnClose()
+        {
+            // إشعار Shell بإغلاق المستند
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"[DocumentDock.OnClose] Closing document: {Document.FilePath}");
+                return Shell.Instance.Close(Document);
+            }
+            catch (Exception ex)
+            {
+                Shell.ReportException(ex);
+                return false;
+            }
         }
     }
 }

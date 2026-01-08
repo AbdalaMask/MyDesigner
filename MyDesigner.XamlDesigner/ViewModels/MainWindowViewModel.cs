@@ -91,6 +91,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
                     Title = Shell.Instance.Title;
                     break;
                 case nameof(Shell.CurrentDocument):
+                    // تحديث CurrentDocument سيؤدي إلى استدعاء OnCurrentDocumentChanged
                     CurrentDocument = Shell.Instance.CurrentDocument;
                     break;
             }
@@ -230,10 +231,19 @@ namespace MyDesigner.XamlDesigner.ViewModels
         }
         partial void OnCurrentDocumentChanged(Document value)
         {
+            System.Diagnostics.Debug.WriteLine($"[MainWindowViewModel.OnCurrentDocumentChanged] New document: {value?.FilePath ?? "null"}");
+            
             // Update Shell's current document
             if (Shell.Instance.CurrentDocument != value)
             {
                 Shell.Instance.CurrentDocument = value;
+            }
+
+            // تحديث التبويب النشط في DockFactory
+            if (value != null && _dockFactory != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MainWindowViewModel.OnCurrentDocumentChanged] Calling SetActiveDocument for: {value.FilePath}");
+                _dockFactory.SetActiveDocument(value);
             }
 
             // Refresh command states

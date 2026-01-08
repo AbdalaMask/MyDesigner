@@ -436,7 +436,7 @@ namespace MyDesigner.XamlDesigner
                     }
                 }
 
-                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Creating new document for: {path}");
+                FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] No existing document found, creating new document for: {path}");
                 var newDoc = new Document(path, assemblyPaths, projectAssemblyName);
                 FileOpeningLogContext.Info($"[Shell.OpenWithAssemblies] Document created, FilePath={newDoc.FilePath}");
                 
@@ -508,6 +508,8 @@ namespace MyDesigner.XamlDesigner
         {
             try
             {
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Shell.Close] Closing document: {doc.FilePath}");
+                
                 if (doc.IsDirty)
                 {
                     // In a real application, show a dialog asking to save
@@ -518,8 +520,18 @@ namespace MyDesigner.XamlDesigner
                 // Cleanup document resources
                 doc.Cleanup();
                 
+                // إذا كان المستند المغلق هو المستند الحالي، قم بإعادة تعيين CurrentDocument
+                if (CurrentDocument == doc)
+                {
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Shell.Close] Closed document was current, selecting new current document");
+                    // اختر مستند آخر كمستند حالي، أو null إذا لم يعد هناك مستندات
+                    CurrentDocument = Documents.FirstOrDefault(d => d != doc);
+                    MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Shell.Close] New current document: {CurrentDocument?.FilePath ?? "null"}");
+                }
+                
                 Documents.Remove(doc);
                 Views.Remove(doc);
+                MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Shell.Close] Document removed from collections. Remaining documents: {Documents.Count}");
                 return true;
             }
             catch (Exception ex)

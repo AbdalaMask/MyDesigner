@@ -112,7 +112,7 @@ namespace MyDesigner.XamlDesigner
                 OnPropertyChanged(nameof(Mode));
                 OnPropertyChanged(nameof(InXamlMode));
                 OnPropertyChanged(nameof(InDesignMode));
-                OnPropertyChanged(nameof(InCodeMode));
+               
             }
         }
 
@@ -248,17 +248,7 @@ namespace MyDesigner.XamlDesigner
             }
         }
 
-        public bool InCodeMode 
-        { 
-            get => Mode == DocumentMode.Code;
-            set
-            {
-                if (value && Mode != DocumentMode.Code)
-                {
-                    Mode = DocumentMode.Code;
-                }
-            }
-        }
+       
 
         partial void OnXamlTextChanged(string value)
         {
@@ -286,8 +276,8 @@ namespace MyDesigner.XamlDesigner
                     // تحديد نوع الملف وتفعيل الوضع المناسب
                     if (FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
                     {
-                        MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] C# file detected, setting Code mode");
-                        Mode = DocumentMode.Code;
+                        MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] C# file detected, will use separate CodeEditorView");
+                        // لا نحتاج لتفعيل وضع معين هنا لأن CodeEditorView سيتولى الأمر
                     }
                     else if (FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) || 
                              FilePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
@@ -523,7 +513,7 @@ namespace MyDesigner.XamlDesigner
     public enum DocumentMode
     {
         Xaml,
-        Design,Code
+        Design
     }
 
  

@@ -33,15 +33,7 @@
                 IsVisible="{Binding InDesignMode, Converter={StaticResource CollapsedWhenFalse}}"
                 x:Name="uxDesignSurface" />
 
-          <Grid Name="MainGrid" IsVisible="{Binding InCodeMode, Converter={StaticResource CollapsedWhenFalse}}">
-       <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="1*" />
-    </Grid.RowDefinitions>
-
-    <Button Margin="5" Name="RunButton" HorizontalAlignment="Center">Compile and run</Button>
     
-  </Grid>
         </Grid>
     </DockPanel>
 </UserControl>

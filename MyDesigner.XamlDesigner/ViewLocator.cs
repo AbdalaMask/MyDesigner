@@ -42,6 +42,8 @@ namespace MyDesigner.XamlDesigner
                     return new Views.Tools.ThumbnailToolView();
                 case DocumentDock vm:
                     return new DocumentView();
+                case CodeEditorDock:
+                    return new CodeEditorView();
                 default:
                     return new TextBlock { Text = $"View not found for {data.GetType().Name}" };
             }
