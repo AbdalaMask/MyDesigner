@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CSharpEditor;
@@ -78,13 +79,15 @@ namespace MyDesigner.XamlDesigner.Views
                 CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(Button).Assembly.Location),
                 CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(ColorPicker).Assembly.Location),
                 CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(AvaloniaObject).Assembly.Location),
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(Binding).Assembly.Location),
+                CSharpEditor.CachedMetadataReference.CreateFromFile(typeof(AvaloniaXamlLoader).Assembly.Location),
 
             };
 
             try
             {
                 Editor = await CSharpEditor.Editor.Create(sourceText, references: minimalReferences, 
-                    compilationOptions: new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+                    compilationOptions: new CSharpCompilationOptions(OutputKind.WindowsApplication));
 
                 Grid.SetRow(Editor, 1);
                 this.FindControl<Grid>("MainGrid").Children.Add(Editor);
