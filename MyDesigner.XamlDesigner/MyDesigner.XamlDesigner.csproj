@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>this.Ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -68,6 +69,10 @@
 		</None>
 		<Compile Remove="Templates\**\*.*" />
 		<AvaloniaXaml Remove="Templates\**\*.axaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="this.Ico" />
 	</ItemGroup>
 
 	<ItemGroup>
