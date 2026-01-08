@@ -3,6 +3,8 @@ using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Dock.Model.Core;
+using MyDesigner.XamlDesigner.Core;
+using MyDesigner.XamlDesigner.Models;
 using MyDesigner.XamlDesigner.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -54,7 +56,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             {
                 root.Navigate.Execute("Home");
             }
-
+           
             // Subscribe to Shell property changes
             Shell.Instance.PropertyChanged += Shell_PropertyChanged;
 
@@ -70,7 +72,12 @@ namespace MyDesigner.XamlDesigner.ViewModels
             // Initialize commands
             InitializeCommands();
         }
+        private void ProjectExplorer_FileOpenRequested(object? sender, string e)
+        {
 
+        }
+
+   
         private void Shell_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -280,7 +287,7 @@ namespace MyDesigner.XamlDesigner.ViewModels
             if (NewProjectCommand is RelayCommand renderCmd) renderCmd.NotifyCanExecuteChanged();
         }
 
-        #region Page Actions - دوال الصفحات
+        #region Page Actions 
 
        
 

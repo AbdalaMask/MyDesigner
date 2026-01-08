@@ -64,8 +64,8 @@ public partial class MainWindow : Window
         // Setup control references like the original project
         SetupControlReferences();
         
-        // Create a new document by default
-            Shell.Instance.New();
+        //// Create a new document by default
+        //    Shell.Instance.New();
         
     }
 

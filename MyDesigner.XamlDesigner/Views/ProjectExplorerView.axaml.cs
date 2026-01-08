@@ -31,11 +31,35 @@ public partial class ProjectExplorerView : UserControl
         this.DataContext = App.ExplorerVM;
       
     }
-  
+    public string SelectedFilePath => _filePath;
 
+    public TreeView TreeView => FilesTreeView;
+    #region Events
+
+    /// <summary>
+    /// FileSelected TreeView
+    /// </summary>
+    public event EventHandler<string> FileSelected;
+
+    /// <summary>
+    /// FileOpenRequested
+    /// </summary>
+    public event EventHandler<string> FileOpenRequested;
+
+    #endregion
     private void FilesTreeView_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-      
+        if (FilesTreeView.SelectedItem is FileItemViewModel selectedItem)
+        {
+            _filePath = selectedItem.FullPath;
+            FileSelected?.Invoke(this, _filePath);
+
+            // open XAML
+            if (selectedItem.ItemType == FileItemType.XamlFile && File.Exists(_filePath))
+            {
+                FileOpenRequested?.Invoke(this, _filePath);
+            }
+        }
     }
 
     private async void AddNewFolder_Click(object? sender, RoutedEventArgs e)
@@ -56,7 +80,7 @@ public partial class ProjectExplorerView : UserControl
     {
         throw new System.NotImplementedException();
     }
-    public string filePath = string.Empty;
+    public string _filePath = string.Empty;
    
   
 
@@ -153,15 +177,15 @@ public partial class ProjectExplorerView : UserControl
     {
         if (FilesTreeView.SelectedItem is TreeViewItem selectedItem && selectedItem.Header is FileItem fileItem)
         {
-            filePath = fileItem.FullPath;
+            _filePath = fileItem.FullPath;
 
-            if (File.Exists(filePath))
+            if (File.Exists(_filePath))
             {
                 // Read file content
-                var fileContent = File.ReadAllText(filePath);
+                var fileContent = File.ReadAllText(_filePath);
 
                 // Determine file type and perform actions
-                if (filePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase))
+                if (_filePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase))
                 {
                     // Check if the file is a MAUI file and convert it
                     if (fileContent.Contains("xmlns=\"http://schemas.microsoft.com/dotnet/2021/maui\""))
@@ -186,7 +210,7 @@ public partial class ProjectExplorerView : UserControl
 
 
                 }
-                else if (filePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
+                else if (_filePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))
                 {
                     //// Convert Avalonia file to WPF
                     //var wpfXaml = new AvaloniaToWpfConverter().Convert(fileContent);
@@ -199,14 +223,14 @@ public partial class ProjectExplorerView : UserControl
 
 
                 }
-                else if (filePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".config", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".js", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".css", StringComparison.OrdinalIgnoreCase) ||
-                         filePath.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                else if (_filePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".json", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".config", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".js", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".css", StringComparison.OrdinalIgnoreCase) ||
+                         _filePath.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
                 {
 
                 }
@@ -415,11 +439,11 @@ public partial class ProjectExplorerView : UserControl
             Console.WriteLine("[LoadFilesToSolution] خطأ: لا يمكن الحصول على ViewModel");
             return;
         }
-        if (!string.IsNullOrEmpty(filePath))
+        if (!string.IsNullOrEmpty(_filePath))
         {
-            if (File.Exists(filePath))
+            if (File.Exists(_filePath))
             {
-                var xamlFileName = Path.GetFileNameWithoutExtension(filePath).Trim();
+                var xamlFileName = Path.GetFileNameWithoutExtension(_filePath).Trim();
                 if (Settings.Default.ProjectType == "WPF" || Settings.Default.ProjectType == "Maui")
                 {
                     // Search for the corresponding .xaml.cs file
@@ -434,7 +458,7 @@ public partial class ProjectExplorerView : UserControl
                     if (!string.IsNullOrEmpty(csFile))
                         File.Delete(csFile);
                 }
-                File.Delete(filePath);
+                File.Delete(_filePath);
 
                 viewModel.LoadFilesToSolution(Settings.Default.ProjectPath);
             }

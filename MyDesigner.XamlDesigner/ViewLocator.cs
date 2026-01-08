@@ -24,19 +24,27 @@ namespace MyDesigner.XamlDesigner
             {
                 return null;
             }
-            return data switch
+
+            switch (data)
             {
-                ProjectExplorerDock vm => new ProjectExplorerView (),
-                PropertyGridDock vm => new Views.Tools.PropertyGridToolView(),
-                ToolboxDock vm => new FromToolboxView { DataContext = Toolbox.Instance },
-                ErrorsToolDock vm => new Views.Tools.ErrorListToolView(),
-                OutlineDock vm => new Views.Tools.OutlineToolView(),
-                ThumbnailDock vm => new Views.Tools.ThumbnailToolView(),
-                DocumentDock vm => new DocumentView(),
-            
-                _ => new TextBlock { Text = $"View not found for {data.GetType().Name}" }
-            };
-          
+                case ProjectExplorerDock:
+                  
+                  return Core.PageRegistry.ProjectExplorer;
+                case PropertyGridDock vm:
+                    return new Views.Tools.PropertyGridToolView();
+                case ToolboxDock vm:
+                    return new FromToolboxView { DataContext = Toolbox.Instance };
+                case ErrorsToolDock vm:
+                    return new Views.Tools.ErrorListToolView();
+                case OutlineDock vm:
+                    return new Views.Tools.OutlineToolView();
+                case ThumbnailDock vm:
+                    return new Views.Tools.ThumbnailToolView();
+                case DocumentDock vm:
+                    return new DocumentView();
+                default:
+                    return new TextBlock { Text = $"View not found for {data.GetType().Name}" };
+            }
         }
 
         public bool Match(object? data)
