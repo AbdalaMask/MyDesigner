@@ -892,12 +892,17 @@
                     <!--  Dock.Avalonia Layout  -->
                     <dock:DockControl Layout="{Binding Layout}" />
                 </Grid>
-
+                  <!--  Custom Title Bar  -->
+                <Border
+                    Background="{StaticResource HeaderGradientBrush}"
+                    CornerRadius="0,0,12,12"
+                    DockPanel.Dock="Bottom"
+                    Height="40"
+                    >
+                   
+                </Border>
             </DockPanel>
         </Border>
 
     </dialogHost:DialogHost>
-
-
-
 </UserControl>

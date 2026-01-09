@@ -29,7 +29,7 @@ namespace MyDesigner.Designer.Controls;
 public class DropDownButton : Button
 {
     private static readonly Geometry triangle = Geometry.Parse("M0,0 L1,0 0.5,1 z");
-
+    protected override Type StyleKeyOverride => typeof(DropDownButton);
     public DropDownButton()
     {
         Content = new Path

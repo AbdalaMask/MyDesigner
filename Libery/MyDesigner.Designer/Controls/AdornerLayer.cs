@@ -125,8 +125,8 @@ public sealed class AdornerLayer : Panel, IAdornerLayer
 
         Adorners = new AdornerPanelCollection(this);
         
-        // تعيين Z-Index عالي لضمان ظهور الكنترولات المساعدة فوق العناصر الأخرى
-        ZIndex = 1000;
+       
+        ZIndex = 1;
     }
 
     private void OnLayoutUpdated(object sender, EventArgs e)

@@ -273,11 +273,11 @@ namespace MyDesigner.XamlDesigner
                     MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] File content loaded ({Text.Length} characters)");
                     MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] First 100 chars: {Text.Substring(0, Math.Min(100, Text.Length)).Replace('\n', ' ').Replace('\r', ' ')}");
                     
-                    // تحديد نوع الملف وتفعيل الوضع المناسب
+               
                     if (FilePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
                     {
                         MyDesigner.Design.Services.Integration.FileOpeningLogContext.Info($"[Document.ReloadFile] C# file detected, will use separate CodeEditorView");
-                        // لا نحتاج لتفعيل وضع معين هنا لأن CodeEditorView سيتولى الأمر
+                      
                     }
                     else if (FilePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) || 
                              FilePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase))

@@ -325,15 +325,13 @@
                             VerticalAlignment="Top" />
                         <Controls:EnterTextBox
                             Grid.Column="1"
-                            Height="19.277"
+                            Height="12"
                             IsEnabled="{Binding IsNameEnabled}"
                             Margin="44,28,6,0"
                             Text="{Binding Name}"
                             VerticalAlignment="Top"
                             x:Name="NameTextBox">
-                            <Controls:EnterTextBox.Styles>
-                                <!--  IsNameCorrect property not available in Avalonia TextBox  -->
-                            </Controls:EnterTextBox.Styles>
+                          
                         </Controls:EnterTextBox>
                         <TextBlock
                             Grid.Column="1"

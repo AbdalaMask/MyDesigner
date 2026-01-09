@@ -289,7 +289,7 @@ public class DragRepeatButton : RepeatButton
 {
     public static readonly StyledProperty<bool> IsDraggingProperty =
         AvaloniaProperty.Register<DragRepeatButton, bool>(nameof(IsDragging));
-
+    protected override Type StyleKeyOverride => typeof(DragRepeatButton);
     public bool IsDragging
     {
         get => GetValue(IsDraggingProperty);

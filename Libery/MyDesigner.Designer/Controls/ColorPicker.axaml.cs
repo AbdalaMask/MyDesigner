@@ -209,7 +209,7 @@ internal class HexTextBox : TextBox
         if (e.Key == Key.Enter)
         {
             // In Avalonia, we need to manually update the binding
-            //var binding = this.GetBindingExpression(TextProperty);
+           // var binding = this.GetBindingExpression(TextProperty);
             //if (binding != null)
             //{
             //    // Force update the binding source

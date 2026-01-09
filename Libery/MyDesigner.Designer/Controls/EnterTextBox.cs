@@ -25,7 +25,7 @@ namespace MyDesigner.Designer.Controls;
 public class EnterTextBox : TextBox
 {
 
-    protected override Type StyleKeyOverride => typeof(EnterTextBox);
+    protected override Type StyleKeyOverride => typeof(TextBox);
 
     protected override void OnKeyDown(KeyEventArgs e)
     {

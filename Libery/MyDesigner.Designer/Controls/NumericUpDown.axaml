@@ -10,9 +10,9 @@
     <SolidColorBrush x:Key="ArrowBrush">Black</SolidColorBrush>
     <SolidColorBrush x:Key="ArrowsBorderBrush">#B6BDD3</SolidColorBrush>
 
-    
 
-    <Style Selector="RepeatButton.UpButton" x:Key="UpButton">
+
+    <ControlTheme TargetType="RepeatButton" x:Key="UpButton">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Controls:DragRepeatButton">
@@ -28,9 +28,9 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
-    <Style Selector="RepeatButton.DownButton" x:Key="DownButton">
+    <ControlTheme TargetType="RepeatButton" x:Key="DownButton">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="Controls:DragRepeatButton">
@@ -46,7 +46,7 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </ControlTheme>
 
     <ControlTheme TargetType="Controls:NumericUpDown" x:Key="{x:Type Controls:NumericUpDown}">
         <Setter Property="Background" Value="White" />
@@ -76,13 +76,13 @@
                             Grid.RowSpan="2"
                             x:Name="PART_TextBox" />
                         <Controls:DragRepeatButton
-                            Classes="UpButton"
                             Grid.Column="1"
+                            Theme="{StaticResource UpButton}"
                             x:Name="PART_UpButton" />
                         <Controls:DragRepeatButton
-                            Classes="DownButton"
                             Grid.Column="1"
                             Grid.Row="1"
+                            Theme="{StaticResource DownButton}"
                             x:Name="PART_DownButton" />
                         <Border
                             BorderBrush="{StaticResource ArrowsBorderBrush}"
